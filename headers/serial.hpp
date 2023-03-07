@@ -20,7 +20,6 @@ class SerialListener
 #ifdef _WIN32
         HANDLE _h_serial;
 #endif
-
 #ifdef __unix__
         int _h_serial;
         struct termios _port_settings;
@@ -30,7 +29,7 @@ class SerialListener
         SerialListener();
         void sopen(std::string s_port);
         void sclose();
-        int sread();
+        std::string sread();
         void swrite(unsigned int const &message);
 
 #ifdef _WIN32 

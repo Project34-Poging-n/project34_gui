@@ -13,5 +13,10 @@ int main()
     SerialListener listener;
     listener.sopen("COM5");
 
+    while (1) {
+        std::cout << listener.sread() << std::endl;
+    }
+    listener.sclose();
+
     return 0;
 }

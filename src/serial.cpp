@@ -1,6 +1,7 @@
 #include "serial.hpp"
-#include<iostream>
-#include<string>
+#include <iostream>
+#include <string>
+#include <fstream>
 
 // Check if the program is runned on windows, then include the windows api library
 #ifdef _WIN32
@@ -35,12 +36,10 @@ void SerialListener::sopen(std::string s_port)
         GENERIC_READ | GENERIC_WRITE, 
         0, 
         NULL, 
-        OPEN_ALWAYS, 
-        FILE_FLAG_NO_BUFFERING | FILE_FLAG_OVERLAPPED, 
+        OPEN_EXISTING, 
+        FILE_ATTRIBUTE_NORMAL,// FILE_FLAG_NO_BUFFERING | FILE_FLAG_OVERLAPPED, 
         NULL
     );
-
-    std::cout << "[info]\t\tFile info: " << this->getHSerial() << std::endl;
 
     if (this->_h_serial == INVALID_HANDLE_VALUE) {
         if (GetLastError() == ERROR_FILE_NOT_FOUND) {
@@ -54,7 +53,7 @@ void SerialListener::sopen(std::string s_port)
     dcbSerialParam.DCBlength = sizeof(dcbSerialParam);
 
     if (!GetCommState(this->_h_serial, &dcbSerialParam)) {
-        std::cout << "[error]\t\tCan't get the com state from the operating system\n";
+        std::cout << "[error]\t\tCan't get the com state from the operating system: " << GetLastError() << std::endl;
         exit(1);
     }
 
@@ -64,8 +63,19 @@ void SerialListener::sopen(std::string s_port)
     dcbSerialParam.Parity       = NOPARITY;         // Set no parity
 
     if (!SetCommState(this->_h_serial, &dcbSerialParam)) {
-        std::cout << "[error]\t\tCan't set the settings for the com state to open the serial port\n";
+        std::cout << "[error]\t\tCan't set the settings for the com state to open the serial port: " << GetLastError() << std::endl;
         exit(1);
+    }
+
+    COMMTIMEOUTS timeout = {0};
+    timeout.ReadIntervalTimeout             = 60;
+    timeout.ReadTotalTimeoutConstant        = 60;
+    timeout.ReadTotalTimeoutMultiplier      = 15;
+    timeout.WriteTotalTimeoutConstant       = 60;
+    timeout.WriteTotalTimeoutMultiplier     = 8;
+
+    if (!SetCommTimeouts(this->getHSerial(), &timeout)) {
+        std::cout << "[error]\t\tCan't set the comm timeout: " << GetLastError() << std::endl;
     }
 #endif
 
@@ -94,6 +104,9 @@ void SerialListener::sopen(std::string s_port)
         
     }
 #endif
+
+    std::cout << "[info]\t\tHandle value at open: " << this->getHSerial() << std::endl;
+    std::cout << "[info]\t\tSerial port is open at: " << s_port << std::endl;
 }
 
 
@@ -115,9 +128,21 @@ void SerialListener::sclose()
 /**
  * 
  */
-int SerialListener::sread()
+std::string SerialListener::sread()
 {
-    return 1;
+#ifdef _WIN32
+    char sBuffer[7] = {0};
+    DWORD dwRead = 0;
+
+    std::cout << "[info]\t\tHandle value at read: " << this->getHSerial() << std::endl;
+
+    SetFilePointer(this->getHSerial(), 0, NULL, FILE_BEGIN);
+    if (!ReadFile(this->getHSerial(), sBuffer, 7, &dwRead, NULL)) {
+        std::cout << "[error]\t\tCan't read from serial port: " << GetLastError() << std::endl;
+    }
+#endif
+
+    return sBuffer;
 }
 
 
