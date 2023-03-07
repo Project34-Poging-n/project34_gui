@@ -1,25 +1,17 @@
 #include<iostream>
 #include<Windows.h>
+#include "serial.hpp"
 
 
-void serial_open() 
-{
-    HANDLE h_serial;
-    // h_serial = CreateFile("");
-
-    if (h_serial == INVALID_HANDLE_VALUE) {
-        if (GetLastError() == ERROR_FILE_NOT_FOUND) {
-
-        }
-    }
-}
+#ifdef _WIN32
+HANDLE h_serial;
+#endif
 
 
 int main()
 {
-    std::cout << "Hello, cmake of iets ik heb geen idee!!!!!\n";
-
-    while (1);
+    SerialListener listener;
+    listener.sopen("COM5");
 
     return 0;
 }
