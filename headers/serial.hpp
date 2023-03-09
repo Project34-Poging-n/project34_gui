@@ -3,7 +3,7 @@
 
 #include <string>
 #ifdef _WIN32
-#include<Windows.h>      // Check if the program is runned on windows, then include the windows api library
+#include <Windows.h>      // Check if the program is runned on windows, then include the windows api library
 #endif
 #ifdef __unix__
 #include <termios.h>

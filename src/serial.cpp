@@ -80,7 +80,7 @@ void SerialListener::sopen(std::string s_port)
 #endif
 
 #ifdef __unix__
-    memset(&this->_port_settings, 0, sizeof(this->_port_settings));
+    // memset(&this->_port_settings, 0, sizeof(this->_port_settings));
 
     this->_h_serial = open("", O_RDWR | O_NOCTTY | O_NDELAY);
 
@@ -105,7 +105,6 @@ void SerialListener::sopen(std::string s_port)
     }
 #endif
 
-    std::cout << "[info]\t\tHandle value at open: " << this->getHSerial() << std::endl;
     std::cout << "[info]\t\tSerial port is open at: " << s_port << std::endl;
 }
 
@@ -134,15 +133,13 @@ std::string SerialListener::sread()
     char sBuffer[7] = {0};
     DWORD dwRead = 0;
 
-    std::cout << "[info]\t\tHandle value at read: " << this->getHSerial() << std::endl;
-
     SetFilePointer(this->getHSerial(), 0, NULL, FILE_BEGIN);
     if (!ReadFile(this->getHSerial(), sBuffer, 7, &dwRead, NULL)) {
         std::cout << "[error]\t\tCan't read from serial port: " << GetLastError() << std::endl;
     }
 #endif
 
-    return sBuffer;
+    return "";
 }
 
 
