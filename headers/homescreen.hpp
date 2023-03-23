@@ -1,18 +1,24 @@
 #pragma once
 
-#include <gtkmm/window.h>
+
+#include <gtkmm.h>
+#include <memory>
+#include "window.hpp"
 
 
-#ifndef __GTKMM__PROJECT__34__
-#define __GTKMM__PROJECT__34__
+#ifndef __PROJECT34__HOMESCREEN__
+#define __PROJECT34__HOMESCREEN__
 
-class Window : public Gtk::Window
+
+
+class Homescreen : public Window
 {
-    private:
+    protected:
+        Gtk::Frame m_frame;
 
     public:
-        Window();
-        virtual ~Window();
+        Homescreen();
+        virtual ~Homescreen();
 };
 
 #endif

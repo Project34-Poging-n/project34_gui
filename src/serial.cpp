@@ -82,17 +82,24 @@ void SerialListener::sopen(std::string s_port)
 #ifdef __unix__
     // memset(&this->_port_settings, 0, sizeof(this->_port_settings));
 
-    this->_h_serial = open("", O_RDWR | O_NOCTTY | O_NDELAY);
+    this->_h_serial = open(s_port.c_str(), O_RDWR | O_NOCTTY | O_NDELAY);
 
     if (this->getHSerial() == -1) {
-        perror("[info]\t\t");
+        perror("[info]\t\tCan't find the serial port!");
+        exit(1);
     } else {
         fcntl(this->getHSerial(), F_SETFL, 0);
-        std::cout << "[info]\t\tDe poort is open!\n";
+        std::cout << "[info]\t\tThe serial port is open!\n";
     }
 
     cfsetispeed(&this->_port_settings, B115200);    // Set the input speed
     cfsetospeed(&this->_port_settings, B115200);    // Set the output speed
+
+    this->_port_settings.c_iflag &= ~IGNBRK;
+    this->_port_settings.c_lflag = 0;
+    this->_port_settings.c_oflag = 0;
+    this->_port_settings.c_cc[VMIN] = 0;
+    this->_port_settings.c_cc[VTIME] = 5;
 
     this->_port_settings.c_cflag &= ~PARENB;        // No parity
     this->_port_settings.c_cflag &= ~CSTOPB;        // Set stop bits
@@ -101,8 +108,10 @@ void SerialListener::sopen(std::string s_port)
 
     // Set the atrribute 
     if (tcsetattr(this->getHSerial(), TCSANOW, &this->_port_settings) != 0) {
-        
+        perror("[error]\tCan't save the serial port settings!\n");
+        exit(1);
     }
+
 #endif
 
     std::cout << "[info]\t\tSerial port is open at: " << s_port << std::endl;
@@ -139,7 +148,13 @@ std::string SerialListener::sread()
     }
 #endif
 
-    return "";
+#ifdef __unix__
+    char sBuffer[100] = {0};
+
+    int n = read(this->getHSerial(), sBuffer, sizeof(sBuffer));
+    // std::cout << "[info]\t\tText: " << buffer[n] << "\n";
+#endif
+    return sBuffer;
 }
 
 

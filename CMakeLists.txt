@@ -1,9 +1,11 @@
-cmake_minimum_required(VERSION 3.25.2)
+cmake_minimum_required(VERSION 3.25.1)
 
 # Projectname
 project(project34_gui VERSION 1.0)
 
 # Set standard compiler to g++
+set(CMAKE_MAKE_PROGRAM make FORCE)
+set(CMAKE_C_COMPILER gcc)
 set(CMAKE_CXX_COMPILER g++)
 
 # Set standard C++ version to C++14
@@ -14,12 +16,18 @@ set(CMAKE_CXX_STANDARD_REQUIRED true)
 set(HEADER_FILES 
     headers/serial.hpp
     headers/homescreen.hpp
+    headers/window.hpp
 )
 
 # Define all cxx files in the project
 set(SOURCE_FILES src/main.cpp)
 set(SERIAL_FILES src/serial.cpp)
-set(GUI_FILES src/homescreen.cpp)
+
+# Define all cxx files for the gui library
+set(GUI_FILES 
+    src/window.cpp 
+    src/homescreen.cpp
+)
 
 # Configure GTK+
 find_package(PkgConfig REQUIRED)

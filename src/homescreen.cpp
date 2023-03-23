@@ -1,13 +1,16 @@
+#include <gtkmm.h>
+#include <memory>
 #include "homescreen.hpp"
 
 
-Window::Window()  
+Homescreen::Homescreen()
+    : Window("GUI bank")
 {
 
 }
 
 
-Window::~Window()
+Homescreen::~Homescreen()
 {
-
+    
 }
