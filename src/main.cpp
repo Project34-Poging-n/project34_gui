@@ -1,5 +1,7 @@
 #include<iostream>
 #include <gtkmm/application.h>
+#include <thread>
+#include <string>
 #include "serial.hpp"
 #include "homescreen.hpp"
 
@@ -11,21 +13,53 @@
 #endif
 
 
-int main(int argc, char *argv[])
-{
-    SerialListener listener;
+SerialListener listener;
+std::string streamBuffer;
 
-#ifdef __unix__
+
+/**
+ * 
+ */
+void openSerialPort()
+{
     listener.sopen(SERIAL_PORT);
-#endif
 
     while (1) {
-        std::cout << listener.sread() << std::endl;
+        streamBuffer = listener.sread();
+        std::cout << streamBuffer << std::endl;
     }
     //listener.sclose();
+}
 
+
+/**
+ * 
+ */
+void guiInterface(int argc, char *argv[])
+{
     auto app = Gtk::Application::create(argc, argv, "org.gtkmm.project34");
     Homescreen homescreen;
+    app->run(homescreen);
+}
 
-    return app->run(homescreen);
+
+/**
+ * 
+ */
+int main(int argc, char *argv[])
+{
+    std::thread serialListenerThread(openSerialPort);
+    std::thread guiInterfaceThread(guiInterface, argc, argv);
+
+    if (serialListenerThread.joinable()) {
+        std::cout << "[info]\t\tJoin the the serial listener thread!\n";
+        serialListenerThread.join();
+    }
+
+    if (guiInterfaceThread.joinable()) {
+        std::cout << "[info]\t\tJoin the gui listener thread!\n";
+        guiInterfaceThread.join();
+    }
+    
+    return 1;
 }
