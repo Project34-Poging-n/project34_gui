@@ -128,7 +128,11 @@ void SerialListener::sclose()
 #endif
 
 #ifdef __unix__
-    close(this->getHSerial());
+    int rc = close(this->getHSerial());
+    if (rc != 0) {
+        perror("");
+        exit(1);
+    }
 #endif
 }
 

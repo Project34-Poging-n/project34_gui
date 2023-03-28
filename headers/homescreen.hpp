@@ -12,9 +12,9 @@
 
 
 class Homescreen : public Window
-{
+{  
     protected:
-        Gtk::Frame m_frame;
+        
 
     public:
         Homescreen();

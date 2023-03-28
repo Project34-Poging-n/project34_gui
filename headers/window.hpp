@@ -15,6 +15,7 @@ class Window : public Gtk::Window
 
     protected:
         Gtk::Frame frame;
+        Gtk::Box vbox;
 
     public:
         Window(std::string title);

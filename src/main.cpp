@@ -1,9 +1,9 @@
 #include<iostream>
-#include <gtkmm/application.h>
+#include <gtkmm.h>
 #include <thread>
 #include <string>
 #include "serial.hpp"
-#include "homescreen.hpp"
+#include "loginscreen.hpp"
 
 
 #ifdef _WIN32
@@ -38,8 +38,8 @@ void openSerialPort()
 void guiInterface(int argc, char *argv[])
 {
     auto app = Gtk::Application::create(argc, argv, "org.gtkmm.project34");
-    Homescreen homescreen;
-    app->run(homescreen);
+    Loginscreen screen;
+    app->run(screen);
 }
 
 
@@ -60,6 +60,15 @@ int main(int argc, char *argv[])
         std::cout << "[info]\t\tJoin the gui listener thread!\n";
         guiInterfaceThread.join();
     }
+
+    // auto app = Gtk::Application::create(argc, argv, "org.gtkmm.project34");
+    // Loginscreen screen;
+
+    // screen.signal_show().connect([&screen]() {
+    //     // screen.run();
+    // });
+
+    // app->run(screen);
     
     return 1;
 }

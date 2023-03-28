@@ -17,6 +17,7 @@ set(HEADER_FILES
     headers/serial.hpp
     headers/homescreen.hpp
     headers/window.hpp
+    headers/loginscreen.hpp
 )
 
 # Define all cxx files in the project
@@ -27,6 +28,7 @@ set(SERIAL_FILES src/serial.cpp)
 set(GUI_FILES 
     src/window.cpp 
     src/homescreen.cpp
+    src/loginscreen.cpp
 )
 
 # Configure GTK+
