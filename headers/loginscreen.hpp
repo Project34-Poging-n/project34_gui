@@ -19,6 +19,7 @@ class Loginscreen : public Window
         Gtk::Box side_box4;
         Gtk::Label l_label1;
         Gtk::Entry l_entry1;
+        Gtk::Image logo;
         
     public:
         Loginscreen();
