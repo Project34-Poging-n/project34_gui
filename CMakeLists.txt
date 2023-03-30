@@ -9,7 +9,7 @@ set(CMAKE_C_COMPILER gcc)
 set(CMAKE_CXX_COMPILER g++)
 
 # Set standard C++ version to C++14
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED true)
 
 # Include header files
@@ -18,6 +18,8 @@ set(HEADER_FILES
     headers/homescreen.hpp
     headers/window.hpp
     headers/loginscreen.hpp
+    headers/saldoscreen.hpp
+    headers/checkoutscreen.hpp
 )
 
 # Define all cxx files in the project
@@ -29,6 +31,8 @@ set(GUI_FILES
     src/window.cpp 
     src/homescreen.cpp
     src/loginscreen.cpp
+    src/saldoscreen.cpp
+    src/checkoutscreen.cpp
 )
 
 # Configure GTK+

@@ -3,9 +3,10 @@
 #include <string>
 #include "loginscreen.hpp"
 #include "serial.hpp"
+#include "homescreen.hpp"
 
 
-Loginscreen::Loginscreen()
+Loginscreen::Loginscreen(Glib::Dispatcher &dispatcher)
     : Window("GUI bank")
 {
     this->vbox.set_spacing(0);
@@ -39,13 +40,25 @@ Loginscreen::Loginscreen()
     this->logo.set(pixbuf);
     this->logo.set_size_request(pixbuf->get_width(), pixbuf->get_height());
 
+    Glib::RefPtr<Gdk::Pixbuf> pixbuf2 = Gdk::Pixbuf::create_from_file("../img/contactless.png");
+    pixbuf2 = pixbuf2->scale_simple(500, 300, Gdk::INTERP_BILINEAR);
+    this->contactless.set(pixbuf2);
+    this->contactless.set_size_request(pixbuf2->get_width(), pixbuf2->get_height());
+
     // Pack the widgets into the vertical box
     this->side_box1.pack_start(this->logo);
-    this->side_box4.pack_start(this->l_label1);
-    this->side_box4.pack_start(this->l_entry1);
+    // this->side_box4.pack_start(this->l_label1);
+    this->side_box4.pack_start(this->contactless);
+
+    dispatcher.connect(sigc::mem_fun(*this, &Loginscreen::checkLogin));
 
     // Add the vertical box to the LoginScreen
-    add(this->vbox);
+    notebook.append_page(this->vbox, "Loginscreen");
+    notebook.append_page(this->hs.vbox, "Homescreen");
+    notebook.append_page(this->ss.vbox, "Saldoscreen");
+    notebook.append_page(this->cs.vbox, "Checkoutscreen");
+
+    add(this->notebook);
 
     // Set LoginScreen properties
     set_position(Gtk::WIN_POS_CENTER);
@@ -59,22 +72,12 @@ Loginscreen::~Loginscreen()
 }
 
 
-void Loginscreen::run()
+void Loginscreen::checkLogin()
 {
-    SerialListener listener;
-    std::string streamBuffer;
+    std::cout << "[info]\t\tEvent listener updated!!\n";
+    Homescreen screen;
 
-    listener.sopen("/dev/ttyACM0");
-    while(this->getPageReady() != true) {
-        streamBuffer = listener.sread();
-        std::cout << streamBuffer << "\n";
-
-        if (streamBuffer == "4") {
-            std::cout << "[info]\t\tU bent ingelogd!\n";
-            this->setPageReady(true);
-            listener.sclose();
-        }
-    }
+    this->notebook.set_current_page(2);
 }
 
 

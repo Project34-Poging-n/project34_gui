@@ -9,36 +9,40 @@
 #ifdef _WIN32
 #define SERIAL_PORT "COM5"
 #else
-#define SERIAL_PORT "/dev/ttyACM0"
+#define SERIAL_PORT "/dev/ttyACM1"
 #endif
 
 
 SerialListener listener;
-std::string streamBuffer;
 
 
 /**
  * 
  */
-void openSerialPort()
+void openSerialPort(Glib::Dispatcher &dispatcher)
 {
     listener.sopen(SERIAL_PORT);
+    std::string streamBuffer;
 
     while (1) {
         streamBuffer = listener.sread();
         std::cout << streamBuffer << std::endl;
+
+        if (streamBuffer.find("4") != std::string::npos) {
+            dispatcher.emit();
+        }
     }
-    //listener.sclose();
+    listener.sclose();
 }
 
 
 /**
  * 
  */
-void guiInterface(int argc, char *argv[])
+void guiInterface(int argc, char *argv[], Glib::Dispatcher &dispatcher)
 {
     auto app = Gtk::Application::create(argc, argv, "org.gtkmm.project34");
-    Loginscreen screen;
+    Loginscreen screen(dispatcher);
     app->run(screen);
 }
 
@@ -48,8 +52,10 @@ void guiInterface(int argc, char *argv[])
  */
 int main(int argc, char *argv[])
 {
-    std::thread serialListenerThread(openSerialPort);
-    std::thread guiInterfaceThread(guiInterface, argc, argv);
+    Glib::Dispatcher dispatcher;
+
+    std::thread serialListenerThread(openSerialPort, std::ref(dispatcher));
+    std::thread guiInterfaceThread(guiInterface, argc, argv, std::ref(dispatcher));
 
     if (serialListenerThread.joinable()) {
         std::cout << "[info]\t\tJoin the the serial listener thread!\n";

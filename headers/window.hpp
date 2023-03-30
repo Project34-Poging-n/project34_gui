@@ -16,10 +16,13 @@ class Window : public Gtk::Window
     protected:
         Gtk::Frame frame;
         Gtk::Box vbox;
+        // Glib::Dispatcher dispatcher;
 
     public:
         Window(std::string title);
         virtual ~Window();
+
+        // Glib::Dispatcher getDispatcher();
 };
 
 

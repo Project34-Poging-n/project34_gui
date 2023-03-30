@@ -6,14 +6,15 @@
 #include "window.hpp"
 
 
-#ifndef __PROJECT34__HOMESCREEN__
-#define __PROJECT34__HOMESCREEN__
+#ifndef __PROJECT34__CHECKOUTSCREEN__
+#define __PROJECT34__CHECKOUTSCREEN__
 
 
 
-class Homescreen : public Window
+class Checkoutscreen : public Window
 {  
     protected:
+
         Gtk::Box side_box1;
         Gtk::Box side_box2;
         Gtk::Box side_box3;
@@ -21,15 +22,11 @@ class Homescreen : public Window
         Gtk::Label l_label1;
         Gtk::Image logo;
 
-        Gtk::Label b_saldo;
-        Gtk::Label b_get;
-        Gtk::Label b_put;
-
     public:
         Gtk::Box vbox;
 
-        Homescreen();
-        virtual ~Homescreen();
+        Checkoutscreen();
+        virtual ~Checkoutscreen();
 
        //  Gtk::Box *getVBox();
 };

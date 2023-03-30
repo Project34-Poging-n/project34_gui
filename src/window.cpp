@@ -23,9 +23,9 @@ Window::Window(std::string title)
 
     // Configure css file
     Glib::ustring cssPath = "../css/style.css";
-    auto css = Gtk::CssProvider::create();
+    // auto css = Gtk::CssProvider::create();
     // css->load_from_file(cssPath);
-    get_style_context()->add_provider_for_screen(Gdk::Screen::get_default(), css, GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+    // get_style_context()->add_provider_for_screen(Gdk::Screen::get_default(), css, GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
 
     // set_show_tabs(true);
 }
