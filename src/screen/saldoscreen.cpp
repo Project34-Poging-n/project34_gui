@@ -3,7 +3,6 @@
 
 
 Saldoscreen::Saldoscreen()
-    : Window("GUI bank")
 {    
     this->vbox.set_spacing(0);
     this->vbox.set_orientation(Gtk::ORIENTATION_HORIZONTAL);
@@ -22,6 +21,18 @@ Saldoscreen::Saldoscreen()
     font_desc2.set_size(40 * PANGO_SCALE);
     this->l_label2.override_font(font_desc2);
     this->l_label2.set_alignment(0.5, 0.0);
+
+    this->l_label3.set_text("Terug    (3)");
+    this->l_label3.override_background_color(Gdk::RGBA("#B9DBF5"));
+    this->l_label3.override_color(Gdk::RGBA("#FF4C4F"));\
+    Pango::FontDescription font_desc3;
+    font_desc3.set_size(18 * PANGO_SCALE);
+    this->l_label3.override_font(font_desc3);
+    this->l_label3.set_margin_top(240);
+    this->l_label3.set_margin_bottom(30);
+    this->l_label3.set_margin_start(570);
+    this->l_label3.set_margin_end(0);
+    this->l_label3.set_alignment(0.9, 0.5);
 
     // Add the sideboxes
     this->vbox.pack_start(this->side_box1);

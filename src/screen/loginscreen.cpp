@@ -6,8 +6,7 @@
 #include "homescreen.hpp"
 
 
-Loginscreen::Loginscreen(Glib::Dispatcher &dispatcher)
-    : Window("GUI bank")
+Loginscreen::Loginscreen()
 {
     this->vbox.set_spacing(0);
     this->vbox.set_orientation(Gtk::ORIENTATION_HORIZONTAL);
@@ -44,50 +43,20 @@ Loginscreen::Loginscreen(Glib::Dispatcher &dispatcher)
     pixbuf2 = pixbuf2->scale_simple(500, 300, Gdk::INTERP_BILINEAR);
     this->contactless.set(pixbuf2);
     this->contactless.set_size_request(pixbuf2->get_width(), pixbuf2->get_height());
+    this->contactless.override_color(Gdk::RGBA("#FFFFFF"));
 
     // Pack the widgets into the vertical box
     this->side_box1.pack_start(this->logo);
     // this->side_box4.pack_start(this->l_label1);
     this->side_box4.pack_start(this->contactless);
 
-    dispatcher.connect(sigc::mem_fun(*this, &Loginscreen::checkLogin));
-
     // Add the vertical box to the LoginScreen
-    notebook.append_page(this->vbox, "Loginscreen");
-    notebook.append_page(this->hs.vbox, "Homescreen");
-    notebook.append_page(this->ss.vbox, "Saldoscreen");
-    notebook.append_page(this->cs.vbox, "Checkoutscreen");
-
-    add(this->notebook);
 
     // Set LoginScreen properties
-    set_position(Gtk::WIN_POS_CENTER);
-    show_all_children();
 }
 
 
 Loginscreen::~Loginscreen()
 {
     
-}
-
-
-void Loginscreen::checkLogin()
-{
-    std::cout << "[info]\t\tEvent listener updated!!\n";
-    Homescreen screen;
-
-    this->notebook.set_current_page(2);
-}
-
-
-void Loginscreen::setPageReady(bool ready)
-{
-    this->_ready_for_next_page = ready;
-}
-
-
-bool Loginscreen::getPageReady()
-{
-    return this->_ready_for_next_page;
 }

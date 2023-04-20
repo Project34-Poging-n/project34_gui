@@ -3,24 +3,24 @@
 
 #include <gtkmm.h>
 #include <memory>
-#include "window.hpp"
 
 
 #ifndef __PROJECT34__CHECKOUTSCREEN__
 #define __PROJECT34__CHECKOUTSCREEN__
 
 
-
-class Checkoutscreen : public Window
+class Checkoutscreen
 {  
     protected:
-
         Gtk::Box side_box1;
         Gtk::Box side_box2;
         Gtk::Box side_box3;
         Gtk::Box side_box4;
         Gtk::Label l_label1;
         Gtk::Image logo;
+        Gtk::Label fastp;
+        Gtk::Label slowp;
+        Gtk::Label back;
 
     public:
         Gtk::Box vbox;
@@ -29,6 +29,7 @@ class Checkoutscreen : public Window
         virtual ~Checkoutscreen();
 
        //  Gtk::Box *getVBox();
+       int getPageNumber();
 };
 
 #endif

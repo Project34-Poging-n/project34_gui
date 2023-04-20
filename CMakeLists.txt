@@ -9,7 +9,7 @@ set(CMAKE_C_COMPILER gcc)
 set(CMAKE_CXX_COMPILER g++)
 
 # Set standard C++ version to C++14
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED true)
 
 # Include header files
@@ -20,6 +20,7 @@ set(HEADER_FILES
     headers/loginscreen.hpp
     headers/saldoscreen.hpp
     headers/checkoutscreen.hpp
+    headers/slowcheckoutscreen.hpp
 )
 
 # Define all cxx files in the project
@@ -27,12 +28,13 @@ set(SOURCE_FILES src/main.cpp)
 set(SERIAL_FILES src/serial.cpp)
 
 # Define all cxx files for the gui library
-set(GUI_FILES 
-    src/window.cpp 
-    src/homescreen.cpp
-    src/loginscreen.cpp
-    src/saldoscreen.cpp
-    src/checkoutscreen.cpp
+set(GUI_FILES  
+    src/screen/homescreen.cpp
+    src/screen/loginscreen.cpp
+    src/screen/saldoscreen.cpp
+    src/screen/checkoutscreen.cpp
+    src/screen/slowcheckoutscreen.cpp
+    src/window.cpp
 )
 
 # Configure GTK+

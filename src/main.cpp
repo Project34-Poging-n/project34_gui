@@ -3,14 +3,15 @@
 #include <thread>
 #include <string>
 #include "serial.hpp"
-#include "loginscreen.hpp"
+#include "window.hpp"
 
 
 #ifdef _WIN32
 #define SERIAL_PORT "COM5"
 #else
-#define SERIAL_PORT "/dev/ttyACM1"
+#define SERIAL_PORT "/dev/ttyACM0"
 #endif
+#define APPLICATION_TITLE "ATM GUI"
 
 
 SerialListener listener;
@@ -19,18 +20,14 @@ SerialListener listener;
 /**
  * 
  */
-void openSerialPort(Glib::Dispatcher &dispatcher)
+void openSerialPort(sigc::signal<void, std::string> &signal)
 {
     listener.sopen(SERIAL_PORT);
     std::string streamBuffer;
 
     while (1) {
         streamBuffer = listener.sread();
-        std::cout << streamBuffer << std::endl;
-
-        if (streamBuffer.find("4") != std::string::npos) {
-            dispatcher.emit();
-        }
+        signal.emit(streamBuffer);
     }
     listener.sclose();
 }
@@ -39,10 +36,10 @@ void openSerialPort(Glib::Dispatcher &dispatcher)
 /**
  * 
  */
-void guiInterface(int argc, char *argv[], Glib::Dispatcher &dispatcher)
+void guiInterface(int argc, char *argv[], sigc::signal<void, std::string> &signal)
 {
     auto app = Gtk::Application::create(argc, argv, "org.gtkmm.project34");
-    Loginscreen screen(dispatcher);
+    Window screen(APPLICATION_TITLE, signal);
     app->run(screen);
 }
 
@@ -52,29 +49,20 @@ void guiInterface(int argc, char *argv[], Glib::Dispatcher &dispatcher)
  */
 int main(int argc, char *argv[])
 {
-    Glib::Dispatcher dispatcher;
+    sigc::signal<void, std::string> dataSignal;
 
-    std::thread serialListenerThread(openSerialPort, std::ref(dispatcher));
-    std::thread guiInterfaceThread(guiInterface, argc, argv, std::ref(dispatcher));
+    // std::thread serialListenerThread(openSerialPort, std::ref(dataSignal));
+    std::thread guiInterfaceThread(guiInterface, argc, argv, std::ref(dataSignal));
 
-    if (serialListenerThread.joinable()) {
-        std::cout << "[info]\t\tJoin the the serial listener thread!\n";
-        serialListenerThread.join();
-    }
+    // if (serialListenerThread.joinable()) {
+    //     std::cout << "[info]\t\tJoin the the serial listener thread!\n";
+    //     serialListenerThread.join();
+    // }
 
     if (guiInterfaceThread.joinable()) {
         std::cout << "[info]\t\tJoin the gui listener thread!\n";
         guiInterfaceThread.join();
     }
-
-    // auto app = Gtk::Application::create(argc, argv, "org.gtkmm.project34");
-    // Loginscreen screen;
-
-    // screen.signal_show().connect([&screen]() {
-    //     // screen.run();
-    // });
-
-    // app->run(screen);
     
     return 1;
 }

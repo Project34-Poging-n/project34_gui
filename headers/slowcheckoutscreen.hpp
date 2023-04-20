@@ -2,14 +2,13 @@
 
 
 #include <gtkmm.h>
-#include <memory>
 
 
-#ifndef __PROJECT34__LOGINSCREEN__
-#define __PROJECT34__LOGINSCREEN__
+#ifndef __PROJECT34__SLOW__CHECKOUTSCREEN__
+#define __PROJECT34__SLOW__CHECKOUTSCREEN__
 
 
-class Loginscreen
+class SlowCheckoutscreen
 {  
     protected:
         Gtk::Box side_box1;
@@ -17,18 +16,15 @@ class Loginscreen
         Gtk::Box side_box3;
         Gtk::Box side_box4;
         Gtk::Label l_label1;
-        Gtk::Entry l_entry1;
         Gtk::Image logo;
-        Gtk::Image contactless;
-        
+        Gtk::Label title;
+        Gtk::Entry textbox;
+
     public:
         Gtk::Box vbox;
 
-        Loginscreen();
-        virtual ~Loginscreen();
-        
-    private:
-
+        SlowCheckoutscreen();
+        virtual ~SlowCheckoutscreen();
 };
 
 #endif

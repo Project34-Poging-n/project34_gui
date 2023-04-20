@@ -1,9 +1,8 @@
 #include <gtkmm.h>
-#include "checkoutscreen.hpp"
+#include "slowcheckoutscreen.hpp"
 
 
-Checkoutscreen::Checkoutscreen()
-    : Window("GUI bank")
+SlowCheckoutscreen::SlowCheckoutscreen()
 {    
     this->vbox.set_spacing(0);
     this->vbox.set_orientation(Gtk::ORIENTATION_HORIZONTAL);
@@ -40,7 +39,7 @@ Checkoutscreen::Checkoutscreen()
 }
 
 
-Checkoutscreen::~Checkoutscreen()
+SlowCheckoutscreen::~SlowCheckoutscreen()
 {
     
 }   

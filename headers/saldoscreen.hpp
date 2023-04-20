@@ -3,7 +3,6 @@
 
 #include <gtkmm.h>
 #include <memory>
-#include "window.hpp"
 
 
 #ifndef __PROJECT34__SALDOSCREEN__
@@ -11,7 +10,7 @@
 
 
 
-class Saldoscreen : public Window
+class Saldoscreen
 {  
     protected:
 
@@ -31,6 +30,7 @@ class Saldoscreen : public Window
         virtual ~Saldoscreen();
 
        //  Gtk::Box *getVBox();
+       int getPageNumber();
 };
 
 #endif

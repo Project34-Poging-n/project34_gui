@@ -3,7 +3,6 @@
 
 
 Homescreen::Homescreen()
-    : Window("GUI bank")
 {    
     this->vbox.set_spacing(10);
     this->vbox.set_orientation(Gtk::ORIENTATION_HORIZONTAL);
