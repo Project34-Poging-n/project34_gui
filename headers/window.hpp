@@ -3,7 +3,6 @@
 
 #include <gtkmm.h>
 #include <string>
-
 #include "loginscreen.hpp"
 #include "homescreen.hpp"
 #include "checkoutscreen.hpp"
@@ -26,7 +25,7 @@ class Window : public Gtk::Window
         Gtk::Notebook notebook;
         Gtk::Frame frame;
         Gtk::Box vbox;
-        
+
         Loginscreen ls;
         Homescreen hs;
         Saldoscreen ss;

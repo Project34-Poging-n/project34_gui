@@ -51,13 +51,13 @@ int main(int argc, char *argv[])
 {
     sigc::signal<void, std::string> dataSignal;
 
-    // std::thread serialListenerThread(openSerialPort, std::ref(dataSignal));
+    std::thread serialListenerThread(openSerialPort, std::ref(dataSignal));
     std::thread guiInterfaceThread(guiInterface, argc, argv, std::ref(dataSignal));
 
-    // if (serialListenerThread.joinable()) {
-    //     std::cout << "[info]\t\tJoin the the serial listener thread!\n";
-    //     serialListenerThread.join();
-    // }
+    if (serialListenerThread.joinable()) {
+        std::cout << "[info]\t\tJoin the the serial listener thread!\n";
+        serialListenerThread.join();
+    }
 
     if (guiInterfaceThread.joinable()) {
         std::cout << "[info]\t\tJoin the gui listener thread!\n";

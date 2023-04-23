@@ -1,7 +1,43 @@
 #include <gtkmm.h>
 #include "slowcheckoutscreen.hpp"
+#include <iostream>
+#include <locale>
 
 
+#define MAX_TEXT_INPUT_SIZE 50
+
+
+/**
+ * Function to strip wwhite spaces from a string
+ * 
+ * @param s
+ * @return std::string 
+ */
+std::string strip_white_spaces(std::string s)
+{
+    std::string n = "";
+
+    for (char x : s) {
+        switch(x)
+        {
+            case '\n':
+                break;
+            case '\t';
+                break;
+            case '\r':
+                break;
+            default:
+                n.append(x);
+        }
+    }
+
+    return n;
+}
+
+
+/**
+ * Constructor
+ */
 SlowCheckoutscreen::SlowCheckoutscreen()
 {    
     this->vbox.set_spacing(0);
@@ -32,14 +68,99 @@ SlowCheckoutscreen::SlowCheckoutscreen()
     this->logo.set(pixbuf);
     this->logo.set_size_request(pixbuf->get_width(), pixbuf->get_height());
 
+    // Set child elements
+    this->title.set_text("Type in uw waarde: ");
+    this->title.override_color(Gdk::RGBA("#B9DBF5"));
+    Pango::FontDescription font_desc1;
+    font_desc1.set_size(40 * PANGO_SCALE);
+    this->title.override_font(font_desc1);
+
+    this->textbox.set_max_length(MAX_TEXT_INPUT_SIZE);
+    this->textbox.set_text("");
+    this->textbox.set_margin_start(150);
+    this->textbox.set_margin_end(150);
+    Pango::FontDescription font_desc2;
+    font_desc2.set_size(40 * PANGO_SCALE);
+    this->textbox.override_font(font_desc1);
+
+    this->back.set_text("Terug    (3)");
+    this->back.override_background_color(Gdk::RGBA("#B9DBF5"));
+    this->back.override_color(Gdk::RGBA("#FF4C4F"));\
+    Pango::FontDescription font_desc3;
+    font_desc3.set_size(18 * PANGO_SCALE);
+    this->back.override_font(font_desc3);
+    this->back.set_margin_top(200);
+    this->back.set_margin_bottom(30);
+    this->back.set_margin_start(570);
+    this->back.set_margin_end(0);
+    this->back.set_alignment(0.9, 0.5);
+
     // Pack the widgets into the vertical box
     this->side_box1.pack_start(this->logo);
+    this->side_box4.pack_start(this->title);
+    this->side_box4.pack_start(this->textbox);
+    this->side_box4.pack_start(this->back);
 
     // show_all_children();
 }
 
 
+/**
+ * Destructor
+ */
 SlowCheckoutscreen::~SlowCheckoutscreen()
 {
     
 }   
+
+
+/**
+ *
+ * 
+ * @param data
+*/
+void SlowCheckoutscreen::update_textbox(std::string data)
+{
+    std::string od = this->textbox.get_text();
+    // if (od == "bedr") {
+    //     od.erase();
+    // }
+
+    // data = strip_white_spaces(data);
+
+    for (int i = 0; i < data.size(); i++) {
+        std::cout << "In checkout scherm: " << (int)data[i] << "\n";
+    }
+
+    
+
+    if (this->_size < MAX_TEXT_INPUT_SIZE && data.size()>0 && od.size() < MAX_TEXT_INPUT_SIZE) {
+        od.append(data);
+        this->textbox.set_text(od);
+        std::cout << "Test: " << od << "\n";
+    }
+
+}
+
+
+/**
+ * Function to enable the signal
+ * 
+ * @param signal 
+ */
+void SlowCheckoutscreen::setSignal(sigc::signal<void, std::string> &signal)
+{
+    this->signal = signal;
+    this->signal.connect(sigc::mem_fun(this, &SlowCheckoutscreen::update_textbox));
+}
+
+
+/**
+ * Functio to get the signal for sending data over the threads
+ * 
+ * @return sigc::signal<void, std::string>
+ */
+sigc::signal<void, std::string> SlowCheckoutscreen::getSignal()
+{
+    return this->signal;
+}

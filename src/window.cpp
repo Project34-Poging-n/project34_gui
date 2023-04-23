@@ -32,6 +32,8 @@ Window::Window(std::string title, sigc::signal<void, std::string> &signal)
     // Connect
     signal.connect(sigc::mem_fun(this, &Window::checkLogin));
 
+    this->scs.setSignal(signal);
+
     // Add all pages to the nodebook
     this->notebook.append_page(this->ls.vbox, "Loginscreen");
     this->notebook.append_page(this->hs.vbox, "Homescreen");

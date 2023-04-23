@@ -10,6 +10,11 @@
 
 class SlowCheckoutscreen
 {  
+    private:
+        void update_textbox(std::string data);
+        sigc::signal<void, std::string> signal;
+        int _size;
+
     protected:
         Gtk::Box side_box1;
         Gtk::Box side_box2;
@@ -19,12 +24,15 @@ class SlowCheckoutscreen
         Gtk::Image logo;
         Gtk::Label title;
         Gtk::Entry textbox;
+        Gtk::Label back;
 
     public:
         Gtk::Box vbox;
 
         SlowCheckoutscreen();
         virtual ~SlowCheckoutscreen();
+        void setSignal(sigc::signal<void, std::string> &signal);
+        sigc::signal<void, std::string> getSignal();
 };
 
 #endif
