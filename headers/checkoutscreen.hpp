@@ -21,6 +21,8 @@ class Checkoutscreen
         Gtk::Label fastp;
         Gtk::Label slowp;
         Gtk::Label back;
+        Gtk::Label fastp2;
+        Gtk::Label fastp3;
 
     public:
         Gtk::Box vbox;

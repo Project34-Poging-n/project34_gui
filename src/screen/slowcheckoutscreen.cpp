@@ -18,17 +18,17 @@ std::string strip_white_spaces(std::string s)
     std::string n = "";
 
     for (char x : s) {
-        switch(x)
-        {
-            case '\n':
-                break;
-            case '\t';
-                break;
-            case '\r':
-                break;
-            default:
-                n.append(x);
-        }
+        // switch(x)
+        // {
+        //     case '\n':
+        //         break;
+        //     case '\t';
+        //         break;
+        //     case '\r':
+        //         break:
+        //     default:
+        //         // n.append(x);
+        // }
     }
 
     return n;

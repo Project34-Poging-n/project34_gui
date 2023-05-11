@@ -21,6 +21,8 @@ set(HEADER_FILES
     headers/saldoscreen.hpp
     headers/checkoutscreen.hpp
     headers/slowcheckoutscreen.hpp
+    headers/api.hpp
+    headers/successscreen.hpp
 )
 
 # Define all cxx files in the project
@@ -34,7 +36,13 @@ set(GUI_FILES
     src/screen/saldoscreen.cpp
     src/screen/checkoutscreen.cpp
     src/screen/slowcheckoutscreen.cpp
+    src/screen/successscreen.cpp
     src/window.cpp
+)
+
+# Define all cxx files for the api
+set(API_FILES
+    src/api.cpp
 )
 
 # Configure GTK+
@@ -44,7 +52,13 @@ link_directories(${GTKMM_LIBRARY_DIRS})
 include_directories(${GTKMM_INCLUDE_DIRS})
 
 # Nlohman json library
-find_package(nlohmann_json 3.2.0 REQUIRED)
+# find_package(nlohmann_json 3.2.0 REQUIRED)
+# set(JSON_Install OFF CACHE INTERNAL "")
+# add_subdirectory(library/json)
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(JSONCPP jsoncpp)
+find_package(CURL REQUIRED)
+
 
 # Generate library files for the serial interface
 add_library(serialInterface STATIC ${SERIAL_FILES})
@@ -56,10 +70,20 @@ add_library(guiInterface STATIC ${GUI_FILES})
 target_include_directories(guiInterface PUBLIC headers)
 include_directories(${GTKMM_INCLUDE_DIRS})
 
+# Generate library files for the api
+add_library(apiInterface STATIC ${API_FILES})
+target_include_directories(apiInterface PUBLIC headers)
+include_directories(${GTKMM_INCLUDE_DIRS})
+include_directories(${CURL_INCLUDE_DIR})
+
+
 # Create executable
 add_executable(${PROJECT_NAME} ${SOURCE_FILES} ${HEADER_FILES})
 add_definitions (${GTKMM_CFLAGS_OTHER})
 target_link_libraries(${PROJECT_NAME} PRIVATE serialInterface)
 target_link_libraries(${PROJECT_NAME} PRIVATE guiInterface)
+target_link_libraries(${PROJECT_NAME} PRIVATE apiInterface)
 target_link_libraries(${PROJECT_NAME} PRIVATE ${GTKMM_LIBRARIES})
-target_link_libraries(${PROJECT_NAME} PRIVATE nlohmann_json::nlohmann_json)
+target_link_libraries(${PROJECT_NAME} PRIVATE ${JSONCPP_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} PRIVATE ${CURL_LIBRARIES})
+#target_link_libraries(${PROJECT_NAME} PRIVATE nlohmann_json::nlohmann_json)

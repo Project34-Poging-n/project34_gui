@@ -2,6 +2,9 @@
 #include "checkoutscreen.hpp"
 
 
+#define BAR_MARGIN 10
+
+
 Checkoutscreen::Checkoutscreen()
 {    
     this->vbox.set_spacing(0);
@@ -16,25 +19,45 @@ Checkoutscreen::Checkoutscreen()
     this->vbox.pack_start(this->side_box4);
 
     // Set child elements
-    this->fastp.set_text("Snel pinnen     (1)");
+    this->fastp.set_text("€ 75     (A)");
     this->fastp.override_background_color(Gdk::RGBA("#B9DBF5"));
     this->fastp.override_color(Gdk::RGBA("#FF4C4F"));\
     Pango::FontDescription font_desc1;
     font_desc1.set_size(30 * PANGO_SCALE);
     this->fastp.override_font(font_desc1);
-    this->fastp.set_margin_top(30);
-    this->fastp.set_margin_bottom(30);
+    this->fastp.set_margin_top(BAR_MARGIN);
+    this->fastp.set_margin_bottom(BAR_MARGIN);
     this->fastp.set_margin_start(270);
     this->fastp.set_margin_end(30);
     this->fastp.set_alignment(0.9, 0.5);
 
-    this->slowp.set_text("Normaal pinnen  (2)");
+    this->fastp.set_text("€ 50     (B)");
+    this->fastp.override_background_color(Gdk::RGBA("#B9DBF5"));
+    this->fastp.override_color(Gdk::RGBA("#FF4C4F"));\
+    this->fastp.override_font(font_desc1);
+    this->fastp.set_margin_top(BAR_MARGIN);
+    this->fastp.set_margin_bottom(BAR_MARGIN);
+    this->fastp.set_margin_start(270);
+    this->fastp.set_margin_end(30);
+    this->fastp.set_alignment(0.9, 0.5);
+
+    this->fastp.set_text("€ 20     (C)");
+    this->fastp.override_background_color(Gdk::RGBA("#B9DBF5"));
+    this->fastp.override_color(Gdk::RGBA("#FF4C4F"));\
+    this->fastp.override_font(font_desc1);
+    this->fastp.set_margin_top(BAR_MARGIN);
+    this->fastp.set_margin_bottom(BAR_MARGIN);
+    this->fastp.set_margin_start(270);
+    this->fastp.set_margin_end(30);
+    this->fastp.set_alignment(0.9, 0.5);
+
+    this->slowp.set_text("Ander bedrag  (D)");
     this->slowp.override_background_color(Gdk::RGBA("#B9DBF5"));
     this->slowp.override_color(Gdk::RGBA("#FF4C4F"));\
     font_desc1.set_size(30 * PANGO_SCALE);
     this->slowp.override_font(font_desc1);
-    this->slowp.set_margin_top(30);
-    this->slowp.set_margin_bottom(30);
+    this->slowp.set_margin_top(BAR_MARGIN);
+    this->slowp.set_margin_bottom(BAR_MARGIN);
     this->slowp.set_margin_start(270);
     this->slowp.set_margin_end(30);
     this->slowp.set_alignment(0.9, 0.5);
@@ -72,6 +95,8 @@ Checkoutscreen::Checkoutscreen()
     // Pack the widgets into the vertical box
     this->side_box1.pack_start(this->logo);
     this->side_box4.pack_start(this->fastp);
+    this->side_box4.pack_start(this->fastp2);
+    this->side_box4.pack_start(this->fastp3);
     this->side_box4.pack_start(this->slowp);
     this->side_box4.pack_start(this->back);
 

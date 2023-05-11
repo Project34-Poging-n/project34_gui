@@ -65,22 +65,30 @@ Window::~Window()
 void Window::checkLogin(std::string data)
 {
     std::cout << "Dit is: " << data << "\n";
-    // this->notebook.set_current_page(2);
+    // this->notebook.set_current_page(1);
+    if (this->getCurrentPageNumber() == 0) 
+        this->setCurrentPageNumber(1);
 
     if (this->getCurrentPageNumber() == 1) {
-        if (data.find("1") != std::string::npos) {
-
-        } else if (data.find("2") != std::string::npos) {
-
-        } else if (data.find("3") != std::string::npos) {
+        if (data.find("A") != std::string::npos) {
+            this->setCurrentPageNumber(2);
+        } else if (data.find("B") != std::string::npos) {
+            this->setCurrentPageNumber(3);
+        } else if (data.find("C") != std::string::npos) {
             
         }
     } else if (this->getCurrentPageNumber() == 2) {
-    
+        if (data.find("C") != std::string::npos) {
+            this->setCurrentPageNumber(1);
+        }
     } else if (this->getCurrentPageNumber() == 3) {
-
+        if (data.find("C") != std::string::npos) {
+            this->setCurrentPageNumber(1);
+        }
     } else if (this->getCurrentPageNumber() == 4) {
-
+        if (data.find("C") != std::string::npos) {
+            this->setCurrentPageNumber(3);
+        }
     }
 }
 
@@ -100,6 +108,7 @@ bool Window::getPageReady()
 void Window::setCurrentPageNumber(int number)
 {
     this->_currentPageNumber = number;
+    this->notebook.set_current_page(number);
 }
 
 

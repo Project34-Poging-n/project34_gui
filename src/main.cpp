@@ -4,6 +4,7 @@
 #include <string>
 #include "serial.hpp"
 #include "window.hpp"
+#include "api.hpp"
 
 
 #ifdef _WIN32
@@ -50,6 +51,8 @@ void guiInterface(int argc, char *argv[], sigc::signal<void, std::string> &signa
 int main(int argc, char *argv[])
 {
     sigc::signal<void, std::string> dataSignal;
+
+    get_data(10);
 
     std::thread serialListenerThread(openSerialPort, std::ref(dataSignal));
     std::thread guiInterfaceThread(guiInterface, argc, argv, std::ref(dataSignal));
