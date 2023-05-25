@@ -163,11 +163,21 @@ std::string SerialListener::sread()
 
 
 /**
- * 
+ * Function to 
  */
-void SerialListener::swrite(unsigned int const &message)
+void SerialListener::swrite(const char *message)
 {
+#ifdef _WIN32
 
+#endif
+
+#ifdef __unix__
+    short result = write(this->getHSerial(), message, sizeof(message));
+
+    if (result == -1) {
+        std::cerr << "[error]\tCan't write the buffer to the output node\n";
+    }
+#endif
 }
 
 

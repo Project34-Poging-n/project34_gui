@@ -30,7 +30,7 @@ class SerialListener
         void sopen(std::string s_port);
         void sclose();
         std::string sread();
-        void swrite(unsigned int const &message);
+        void swrite(const char *message);
 
 #ifdef _WIN32 
         void setHSerial(HANDLE handle);

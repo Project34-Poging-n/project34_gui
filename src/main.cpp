@@ -8,29 +8,56 @@
 
 
 #ifdef _WIN32
-#define SERIAL_PORT "COM5"
+#define INPUT_SERIAL_PORT   "COM5"
+#define OUTPUT_SERIAL_PORT  ""
 #else
-#define SERIAL_PORT "/dev/ttyACM0"
+#define INPUT_SERIAL_PORT   "/dev/ttyACM0"
+#define OUTPUT_SERIAL_PORT  "/dev/ttyACM1"
 #endif
-#define APPLICATION_TITLE "ATM GUI"
+#define APPLICATION_TITLE   "ATM GUI"
 
 
-SerialListener listener;
+SerialListener ilistener;
+SerialListener olistener;
 
 
 /**
+ * Function to read data from the input node of the atm
  * 
+ * @param signal
  */
 void openSerialPort(sigc::signal<void, std::string> &signal)
 {
-    listener.sopen(SERIAL_PORT);
-    std::string streamBuffer;
+    ilistener.sopen(INPUT_SERIAL_PORT);
+    std::string streamBuffer = "";
 
     while (1) {
-        streamBuffer = listener.sread();
-        signal.emit(streamBuffer);
+        streamBuffer = ilistener.sread();
+        
+        if (streamBuffer != "") {
+            signal.emit(streamBuffer);
+            streamBuffer = "";
+        } 
     }
-    listener.sclose();
+
+    ilistener.sclose();
+}
+
+
+/**
+ * Function to 
+ * 
+ * @param signal
+*/
+void outputNode(sigc::signal<void, std::string> &signal)
+{
+    olistener.sopen(OUTPUT_SERIAL_PORT);
+    const char *streamBuffer = "henk\n";
+
+    while (1) {
+        olistener.swrite(streamBuffer);
+    }
+    olistener.sclose();
 }
 
 
@@ -56,6 +83,7 @@ int main(int argc, char *argv[])
 
     std::thread serialListenerThread(openSerialPort, std::ref(dataSignal));
     std::thread guiInterfaceThread(guiInterface, argc, argv, std::ref(dataSignal));
+    std::thread outputListenerThread(outputNode, std::ref(dataSignal));
 
     if (serialListenerThread.joinable()) {
         std::cout << "[info]\t\tJoin the the serial listener thread!\n";
@@ -65,6 +93,11 @@ int main(int argc, char *argv[])
     if (guiInterfaceThread.joinable()) {
         std::cout << "[info]\t\tJoin the gui listener thread!\n";
         guiInterfaceThread.join();
+    }
+
+    if (outputListenerThread.joinable()) {
+        std::cout << "[info]\t\tJoin the output listener thread!\n";
+        outputListenerThread.join();
     }
     
     return 1;
