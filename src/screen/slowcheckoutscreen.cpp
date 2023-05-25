@@ -69,7 +69,7 @@ SlowCheckoutscreen::SlowCheckoutscreen()
     this->logo.set_size_request(pixbuf->get_width(), pixbuf->get_height());
 
     // Set child elements
-    this->title.set_text("Type in uw waarde: ");
+    this->title.set_text("Voer uw pincode in: ");
     this->title.override_color(Gdk::RGBA("#B9DBF5"));
     Pango::FontDescription font_desc1;
     font_desc1.set_size(40 * PANGO_SCALE);
@@ -114,6 +114,18 @@ SlowCheckoutscreen::~SlowCheckoutscreen()
 }   
 
 
+std::string SlowCheckoutscreen::trim(const std::string& str)
+{
+    size_t first = str.find_first_not_of(' ');
+    if (std::string::npos == first)
+    {
+        return str;
+    }
+    size_t last = str.find_last_not_of(' ');
+    return str.substr(first, (last - first + 1));
+}
+
+
 /**
  *
  * 
@@ -126,13 +138,11 @@ void SlowCheckoutscreen::update_textbox(std::string data)
     //     od.erase();
     // }
 
-    // data = strip_white_spaces(data);
+    // data = this->trim(data);
 
     for (int i = 0; i < data.size(); i++) {
         std::cout << "In checkout scherm: " << (int)data[i] << "\n";
     }
-
-    
 
     if (this->_size < MAX_TEXT_INPUT_SIZE && data.size()>0 && od.size() < MAX_TEXT_INPUT_SIZE) {
         od.append(data);

@@ -26,6 +26,8 @@ size_t writeCallback(char *contents, size_t size, size_t nmemb, void *userp)
 
     // buffer = (char *)realloc(buffer, (size*nmemb) + strlen(buffer) + 1);s
 
+    std::cout << "Jemoeder is een: " << contents << "\n";
+
     char *buffer = static_cast<char *>(userp);
     // memcpy(buffer, contents, size*nmemb);
     return size*nmemb;

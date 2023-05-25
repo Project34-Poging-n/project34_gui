@@ -8,6 +8,7 @@
 #include "checkoutscreen.hpp"
 #include "saldoscreen.hpp"
 #include "slowcheckoutscreen.hpp"
+#include "successscreen.hpp"
 
 
 #ifndef __PROJECT34__WINDOW__
@@ -31,6 +32,7 @@ class Window : public Gtk::Window
         Saldoscreen ss;
         Checkoutscreen cs;
         SlowCheckoutscreen scs;
+        Successscreen sss;
 
     public:
         Window(std::string title, sigc::signal<void, std::string> &signal);

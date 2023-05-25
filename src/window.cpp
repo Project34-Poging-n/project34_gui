@@ -40,6 +40,7 @@ Window::Window(std::string title, sigc::signal<void, std::string> &signal)
     this->notebook.append_page(this->ss.vbox, "Saldoscreen");
     this->notebook.append_page(this->cs.vbox, "Checkoutscreen");
     this->notebook.append_page(this->scs.vbox, "FastCheckout");
+    this->notebook.append_page(this->sss.vbox, "Successscreen");
 
     add(this->notebook);
 
@@ -78,15 +79,23 @@ void Window::checkLogin(std::string data)
             
         }
     } else if (this->getCurrentPageNumber() == 2) {
-        if (data.find("C") != std::string::npos) {
+        if (data.find("9") != std::string::npos) {
             this->setCurrentPageNumber(1);
         }
     } else if (this->getCurrentPageNumber() == 3) {
-        if (data.find("C") != std::string::npos) {
+        if (data.find("A") != std::string::npos) {
+            this->setCurrentPageNumber(4);
+        } else if (data.find("B") != std::string::npos) {
+            this->setCurrentPageNumber(4);
+        } else if (data.find("C") != std::string::npos) {
+            this->setCurrentPageNumber(4);
+        } else if (data.find("D") != std::string::npos) {
+            this->setCurrentPageNumber(4);
+        } else if (data.find("9") != std::string::npos) {
             this->setCurrentPageNumber(1);
         }
     } else if (this->getCurrentPageNumber() == 4) {
-        if (data.find("C") != std::string::npos) {
+        if (data.find("9") != std::string::npos) {
             this->setCurrentPageNumber(3);
         }
     }
