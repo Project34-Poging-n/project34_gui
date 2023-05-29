@@ -62,7 +62,11 @@ void outputNode(sigc::signal<void, std::string> &signal)
 
 
 /**
+ * Function to set up a thread with the gui interface of the atm
  * 
+ * @param argc
+ * @param argv
+ * @param signal
  */
 void guiInterface(int argc, char *argv[], sigc::signal<void, std::string> &signal)
 {

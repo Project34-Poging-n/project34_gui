@@ -116,12 +116,12 @@ SlowCheckoutscreen::~SlowCheckoutscreen()
 
 std::string SlowCheckoutscreen::trim(const std::string& str)
 {
-    size_t first = str.find_first_not_of(' ');
+    size_t first = str.find_first_not_of('\r');
     if (std::string::npos == first)
     {
         return str;
     }
-    size_t last = str.find_last_not_of(' ');
+    size_t last = str.find_last_not_of('\r');
     return str.substr(first, (last - first + 1));
 }
 
@@ -138,7 +138,7 @@ void SlowCheckoutscreen::update_textbox(std::string data)
     //     od.erase();
     // }
 
-    // data = this->trim(data);
+    data = this->trim(data);
 
     for (int i = 0; i < data.size(); i++) {
         std::cout << "In checkout scherm: " << (int)data[i] << "\n";

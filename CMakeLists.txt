@@ -23,6 +23,7 @@ set(HEADER_FILES
     headers/slowcheckoutscreen.hpp
     headers/api.hpp
     headers/successscreen.hpp
+    headers/routing.hpp
 )
 
 # Define all cxx files in the project
@@ -43,6 +44,7 @@ set(GUI_FILES
 # Define all cxx files for the api
 set(API_FILES
     src/api.cpp
+    src.routing.cpp
 )
 
 # Configure GTK+
