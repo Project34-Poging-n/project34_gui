@@ -44,7 +44,7 @@ set(GUI_FILES
 # Define all cxx files for the api
 set(API_FILES
     src/api.cpp
-    src.routing.cpp
+    src/routing.cpp
 )
 
 # Configure GTK+

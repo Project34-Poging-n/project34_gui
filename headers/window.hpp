@@ -15,6 +15,14 @@
 #define __PROJECT34__WINDOW__
 
 
+struct s_pageCell
+{
+    unsigned short page;
+    std::string commands;
+    short newpage[5];
+};
+
+
 class Window : public Gtk::Window
 {
     private:

@@ -4,9 +4,19 @@
 #include <iostream>
 
 
-#define WINDOW_WIDTH    1280
-#define WINDOW_HEIGHT   720
-#define DEFAULT_PATH_FOR_CSS "../css/style.css"
+#define WINDOW_WIDTH            1280
+#define WINDOW_HEIGHT           720
+#define DEFAULT_PATH_FOR_CSS    "../css/style.css"
+#define PAGINATION_SIZE         5
+
+
+static struct s_pageCell paginationTable[] = {
+    { 0, "", { -1, -1, -1, -1, -1} },
+    { 1, "ABC", { 2, 3, -1, -1, -1 } },
+    { 2, "9", { 1, -1, -1, -1, -1 } },
+    { 3, "ABCD9", { 4, 4, 4, 4, 1 } },
+    { 4, "9", { 3, -1, -1, -1, -1 } }
+};
 
 
 /**
@@ -66,37 +76,20 @@ Window::~Window()
 void Window::checkLogin(std::string data)
 {
     std::cout << "Dit is: " << data << "\n";
-    // this->notebook.set_current_page(1);
-    if (this->getCurrentPageNumber() == 0) 
-        this->setCurrentPageNumber(1);
 
-    if (this->getCurrentPageNumber() == 1) {
-        if (data.find("A") != std::string::npos) {
-            this->setCurrentPageNumber(2);
-        } else if (data.find("B") != std::string::npos) {
-            this->setCurrentPageNumber(3);
-        } else if (data.find("C") != std::string::npos) {
+    if (this->getCurrentPageNumber() == 0) {
+        this->setCurrentPageNumber(1);
+    }
+
+    for (int i = 0; i < PAGINATION_SIZE; i++) {
+        if (paginationTable[i].page == this->getCurrentPageNumber()) {
+            size_t commandSize = paginationTable[i].commands.length();
             
-        }
-    } else if (this->getCurrentPageNumber() == 2) {
-        if (data.find("9") != std::string::npos) {
-            this->setCurrentPageNumber(1);
-        }
-    } else if (this->getCurrentPageNumber() == 3) {
-        if (data.find("A") != std::string::npos) {
-            this->setCurrentPageNumber(4);
-        } else if (data.find("B") != std::string::npos) {
-            this->setCurrentPageNumber(4);
-        } else if (data.find("C") != std::string::npos) {
-            this->setCurrentPageNumber(4);
-        } else if (data.find("D") != std::string::npos) {
-            this->setCurrentPageNumber(4);
-        } else if (data.find("9") != std::string::npos) {
-            this->setCurrentPageNumber(1);
-        }
-    } else if (this->getCurrentPageNumber() == 4) {
-        if (data.find("9") != std::string::npos) {
-            this->setCurrentPageNumber(3);
+            for (int j = 0; j < commandSize; j++) {
+                if (data.find(paginationTable[i].commands[j]) != std::string::npos) {
+                    this->setCurrentPageNumber(paginationTable[i].newpage[j]);
+                }
+            }
         }
     }
 }
