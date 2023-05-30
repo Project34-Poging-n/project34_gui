@@ -8,16 +8,21 @@
 #define WINDOW_HEIGHT           720
 #define DEFAULT_PATH_FOR_CSS    "../css/style.css"
 #define PAGINATION_SIZE         5
+#define PAGINATION_STACK_SIZE   10
 
 
 static struct s_pageCell paginationTable[] = {
-    { 0, "", { -1, -1, -1, -1, -1} },
+    { 0, "A", { 4, -1, -1, -1, -1} },
     { 1, "ABC", { 2, 3, -1, -1, -1 } },
     { 2, "9", { 1, -1, -1, -1, -1 } },
     { 3, "ABCD9", { 4, 4, 4, 4, 1 } },
     { 4, "A9", { 5, 3, -1, -1, -1 } },
     { 5, "", { 1, -1, -1, -1, -1, } }
 };
+
+
+static int pp = 0;
+static int paginationStack[PAGINATION_STACK_SIZE];
 
 
 /**
@@ -58,6 +63,10 @@ Window::Window(std::string title, sigc::signal<void, std::string> &signal)
 
     add(this->notebook);
 
+    this->setCurrentPageNumber(0);
+    paginationStack[pp] = 0;
+    pp++;
+
     set_position(Gtk::WIN_POS_CENTER);
     show_all_children();
 }
@@ -79,12 +88,6 @@ Window::~Window()
  */
 void Window::checkLogin(std::string data)
 {
-    std::cout << "Dit is: " << data << "\n";
-
-    if (this->getCurrentPageNumber() == 0) {
-        this->setCurrentPageNumber(1);
-    }
-
     for (int i = 0; i < PAGINATION_SIZE; i++) {
         if (paginationTable[i].page == this->getCurrentPageNumber()) {
             size_t commandSize = paginationTable[i].commands.length();
@@ -92,18 +95,27 @@ void Window::checkLogin(std::string data)
 
             for (int j = 0; j < commandSize; j++) {
                 if (data.find(paginationTable[i].commands[j]) != std::string::npos) {
-                    if (paginationTable[i].newpage[j] == 5) {
-                        if (this->scs.check_pincode()) {
-                            this->sss.writeToDispenser("20");
+                    if (paginationStack[pp] == 4) {
+                        std::cout << "[info]\tPrevious: " << paginationStack[pp-1];
+
+                        if (paginationStack[pp-1] == 0 && this->scs.check_pincode()) {
+                            paginationStack[++pp] = 1;
+                        } else if (this->scs.check_pincode() && (paginationStack[pp-1] == 3)) {
+                            // this->sss.writeToDispenser("20");
+                            paginationStack[++pp] = 5;
+                        } else {
+                            std::cout << "[error]\tPage not found\n";
                         }
                     } else {
-                        this->setCurrentPageNumber(paginationTable[i].newpage[j]);
-                        this->scs._get_current_number = paginationTable[i].newpage[j];
+                        paginationStack[++pp] = paginationTable[i].newpage[j];
                     }
                 }
             }
         }
     }
+
+    this->setCurrentPageNumber(paginationStack[pp]);
+    this->scs._get_current_number = paginationStack[pp];
 }
 
 

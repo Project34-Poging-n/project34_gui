@@ -27,7 +27,13 @@ std::string json_to_string(Json::Value &object)
 
 
 /**
+ * Function to get the callback with the response data of the api
  * 
+ * @param contents
+ * @param size
+ * @param nmemb
+ * @param userp
+ * @return size_t
 */
 size_t writeCallback(char *contents, size_t size, size_t nmemb, void *userp)
 {
@@ -133,6 +139,9 @@ void send_data(std::string url, Json::Value &object)
             headers = curl_slist_append(headers, "Content-Type: application/json");
             curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
 
+            // Set certificate options
+            curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L);
+
             // Set the data in the headers
             curl_easy_setopt(curl, CURLOPT_POSTFIELDS, body.c_str());
             curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, body.length());
@@ -180,13 +189,12 @@ Json::Value get_default_template()
 
     // Head information
     root["head"]["fromCtry"]    = "UK";
-    root["head"]["fromBank"]    = "";
-    root["head"]["toCtry"]      = "";
-    root["head"]["toBank"]      = "";
+    root["head"]["fromBank"]    = "YOMAMA";
+    root["head"]["toCtry"]      = "UK";
+    root["head"]["toBank"]      = "exit";
 
     // Body information
-    root["body"]["first_name"]  = "";
-    root["body"]["last_name"]   = "";
+    root["body"]["accNo"]       = "ASDASDA";
     root["body"]["pin"]         = "";
 
     return root;

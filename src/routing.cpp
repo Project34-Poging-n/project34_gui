@@ -3,7 +3,8 @@
 
 
 static struct s_routingCell routingTable[] = {
-    { "", "" },
+    { "PECI", "" }, // our bank code
+    { "other", "https://145.24.222.51:8081/api/v1/route-data" }
 };
 
 

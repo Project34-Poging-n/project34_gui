@@ -2,41 +2,14 @@
 #include "slowcheckoutscreen.hpp"
 #include <iostream>
 #include <locale>
+#include <regex>
 
 
-#define MAX_TEXT_INPUT_SIZE 10
+#define MAX_TEXT_INPUT_SIZE     4
 
 
 static std::string od = "";
 static std::string dot = "";
-
-
-/**
- * Function to strip wwhite spaces from a string
- * 
- * @param s
- * @return std::string 
- */
-std::string strip_white_spaces(std::string s)
-{
-    std::string n = "";
-
-    for (char x : s) {
-        // switch(x)
-        // {
-        //     case '\n':
-        //         break;
-        //     case '\t';
-        //         break;
-        //     case '\r':
-        //         break:
-        //     default:
-        //         // n.append(x);
-        // }
-    }
-
-    return n;
-}
 
 
 /**
@@ -126,13 +99,8 @@ SlowCheckoutscreen::~SlowCheckoutscreen()
 */
 std::string SlowCheckoutscreen::trim(const std::string& str)
 {
-    size_t first = str.find_first_not_of('\r');
-    if (std::string::npos == first)
-    {
-        return str;
-    }
-    size_t last = str.find_last_not_of('\r');
-    return str.substr(first, (last - first + 1));
+    std::regex pattern("[^a-zA-Z0-9]");
+    return std::regex_replace(str, pattern, "");
 }
 
 
@@ -143,16 +111,15 @@ std::string SlowCheckoutscreen::trim(const std::string& str)
 */
 void SlowCheckoutscreen::update_textbox(std::string data)
 {
+    std::regex pattern("^[0-9]+$");
     data = this->trim(data);
-
-    for (int i = 0; i < data.size(); i++) {
-        std::cout << "In checkout scherm: " << (int)data[i] << "\n";
-    }
     
     if (this->_get_current_number == 4) {
         if (this->_size < MAX_TEXT_INPUT_SIZE && data.size()>0 && od.size() < MAX_TEXT_INPUT_SIZE) {
-            od.append(data);
-            dot.append("*");
+            if (std::regex_match(data, pattern)) {
+                od.append(data);
+                dot.append("*");
+            }
             this->textbox.set_text(dot);
         }
     } else {
@@ -178,6 +145,9 @@ bool SlowCheckoutscreen::check_pincode()
     }
 
     std::cout << "Verkeerde pincode ingevoerd!\n";
+    dot = "";
+    od = "";
+    this->textbox.set_text(dot);
     return false;
 }
 
