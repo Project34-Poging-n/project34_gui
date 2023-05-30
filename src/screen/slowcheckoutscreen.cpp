@@ -118,6 +118,12 @@ SlowCheckoutscreen::~SlowCheckoutscreen()
 }   
 
 
+/**
+ * Function to trim the string
+ * 
+ * @param str
+ * @return string
+*/
 std::string SlowCheckoutscreen::trim(const std::string& str)
 {
     size_t first = str.find_first_not_of('\r');
@@ -151,11 +157,28 @@ void SlowCheckoutscreen::update_textbox(std::string data)
         }
     } else {
         // od.clear();
-        dot.clear();
+        dot = "";
         this->textbox.set_text("");
     }
 
     std::cout << "[info]\tPincode: " << od << "\n";
+}
+
+
+/**
+ * Function to check if the pincode is correct!
+ * 
+ * @return bool
+*/
+bool SlowCheckoutscreen::check_pincode()
+{
+    if (od == "1234") {
+        std::cout << "[info]\tJuiste pincode ingevoerd!";
+        return true;
+    }
+
+    std::cout << "Verkeerde pincode ingevoerd!\n";
+    return false;
 }
 
 
@@ -180,3 +203,5 @@ sigc::signal<void, std::string> SlowCheckoutscreen::getSignal()
 {
     return this->signal;
 }
+
+

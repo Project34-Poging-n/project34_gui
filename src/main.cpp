@@ -44,23 +44,6 @@ void openSerialPort(sigc::signal<void, std::string> &signal)
 
 
 /**
- * Function to 
- * 
- * @param signal
-*/
-// void outputNode(sigc::signal<void, std::string> &signal)
-// {
-//     olistener.sopen(OUTPUT_SERIAL_PORT);
-//     const char *streamBuffer = "henk\n";
-
-//     while (1) {
-//         olistener.swrite(streamBuffer);
-//     }
-//     olistener.sclose();
-// }
-
-
-/**
  * Function to set up a thread with the gui interface of the atm
  * 
  * @param argc
@@ -76,7 +59,10 @@ void guiInterface(int argc, char *argv[], sigc::signal<void, std::string> &signa
 
 
 /**
+ * Main function
  * 
+ * @param argc
+ * @param argv
  */
 int main(int argc, char *argv[])
 {
@@ -86,7 +72,6 @@ int main(int argc, char *argv[])
 
     std::thread serialListenerThread(openSerialPort, std::ref(dataSignal));
     std::thread guiInterfaceThread(guiInterface, argc, argv, std::ref(dataSignal));
-    // std::thread outputListenerThread(outputNode, std::ref(dataSignal));
 
     if (serialListenerThread.joinable()) {
         std::cout << "[info]\t\tJoin the the serial listener thread!\n";

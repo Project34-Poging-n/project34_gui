@@ -93,11 +93,13 @@ void Window::checkLogin(std::string data)
             for (int j = 0; j < commandSize; j++) {
                 if (data.find(paginationTable[i].commands[j]) != std::string::npos) {
                     if (paginationTable[i].newpage[j] == 5) {
-                        this->sss.writeToDispenser("75");
+                        if (this->scs.check_pincode()) {
+                            this->sss.writeToDispenser("20");
+                        }
+                    } else {
+                        this->setCurrentPageNumber(paginationTable[i].newpage[j]);
+                        this->scs._get_current_number = paginationTable[i].newpage[j];
                     }
-                    
-                    this->setCurrentPageNumber(paginationTable[i].newpage[j]);
-                    this->scs._get_current_number = paginationTable[i].newpage[j];
                 }
             }
         }
@@ -105,12 +107,21 @@ void Window::checkLogin(std::string data)
 }
 
 
+/**
+ * Function to set if the page is ready
+ * 
+ * @param ready
+*/
 void Window::setPageReady(bool ready)
 {
     this->_ready_for_next_page = ready;
 }
 
 
+/**
+ * Function
+ * 
+*/
 bool Window::getPageReady()
 {
     return this->_ready_for_next_page;

@@ -36,6 +36,7 @@ class SlowCheckoutscreen
         void setSignal(sigc::signal<void, std::string> &signal);
         sigc::signal<void, std::string> getSignal();
         std::string trim(const std::string& str);
+        bool check_pincode();
 };
 
 #endif
