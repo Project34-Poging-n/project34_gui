@@ -14,6 +14,7 @@ class SlowCheckoutscreen
         void update_textbox(std::string data);
         sigc::signal<void, std::string> signal;
         int _size;
+        
 
     protected:
         Gtk::Box side_box1;
@@ -28,6 +29,7 @@ class SlowCheckoutscreen
 
     public:
         Gtk::Box vbox;
+        int _get_current_number;
 
         SlowCheckoutscreen();
         virtual ~SlowCheckoutscreen();

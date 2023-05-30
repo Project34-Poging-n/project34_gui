@@ -15,12 +15,16 @@ static struct s_pageCell paginationTable[] = {
     { 1, "ABC", { 2, 3, -1, -1, -1 } },
     { 2, "9", { 1, -1, -1, -1, -1 } },
     { 3, "ABCD9", { 4, 4, 4, 4, 1 } },
-    { 4, "9", { 3, -1, -1, -1, -1 } }
+    { 4, "A9", { 5, 3, -1, -1, -1 } },
+    { 5, "", { 1, -1, -1, -1, -1, } }
 };
 
 
 /**
  * Constructor 
+ * 
+ * @param title
+ * @param signal
  */
 Window::Window(std::string title, sigc::signal<void, std::string> &signal)  
 {
@@ -84,10 +88,16 @@ void Window::checkLogin(std::string data)
     for (int i = 0; i < PAGINATION_SIZE; i++) {
         if (paginationTable[i].page == this->getCurrentPageNumber()) {
             size_t commandSize = paginationTable[i].commands.length();
-            
+            std::cout << "[info]\tPagination command size: " << commandSize << " with page number: " << this->getCurrentPageNumber() << "\n";
+
             for (int j = 0; j < commandSize; j++) {
                 if (data.find(paginationTable[i].commands[j]) != std::string::npos) {
+                    if (paginationTable[i].newpage[j] == 5) {
+                        this->sss.writeToDispenser("75");
+                    }
+                    
                     this->setCurrentPageNumber(paginationTable[i].newpage[j]);
+                    this->scs._get_current_number = paginationTable[i].newpage[j];
                 }
             }
         }

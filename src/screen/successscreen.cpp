@@ -6,6 +6,12 @@
 #include "homescreen.hpp"
 
 
+#define OUTPUT_SERIAL_PORT  "/dev/ttyACM1"
+
+
+SerialListener olistener;
+
+
 Successscreen::Successscreen()
 {
     this->vbox.set_spacing(0);
@@ -46,10 +52,21 @@ Successscreen::Successscreen()
     // Add the vertical box to the LoginScreen
 
     // Set LoginScreen properties
+
+    // Print the money
 }
 
 
 Successscreen::~Successscreen()
 {
     
+}
+
+
+void Successscreen::writeToDispenser(const char *amount)
+{
+    std::cout << "[info]\tMoneyDispenser called\n";
+    olistener.sopen(OUTPUT_SERIAL_PORT);
+    olistener.swrite(amount);
+    olistener.sclose();
 }

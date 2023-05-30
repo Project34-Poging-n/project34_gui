@@ -12,13 +12,12 @@
 #define OUTPUT_SERIAL_PORT  ""
 #else
 #define INPUT_SERIAL_PORT   "/dev/ttyACM0"
-#define OUTPUT_SERIAL_PORT  "/dev/ttyACM1"
 #endif
 #define APPLICATION_TITLE   "ATM GUI"
 
 
 SerialListener ilistener;
-SerialListener olistener;
+// SerialListener olistener;
 
 
 /**
@@ -49,16 +48,16 @@ void openSerialPort(sigc::signal<void, std::string> &signal)
  * 
  * @param signal
 */
-void outputNode(sigc::signal<void, std::string> &signal)
-{
-    olistener.sopen(OUTPUT_SERIAL_PORT);
-    const char *streamBuffer = "henk\n";
+// void outputNode(sigc::signal<void, std::string> &signal)
+// {
+//     olistener.sopen(OUTPUT_SERIAL_PORT);
+//     const char *streamBuffer = "henk\n";
 
-    while (1) {
-        olistener.swrite(streamBuffer);
-    }
-    olistener.sclose();
-}
+//     while (1) {
+//         olistener.swrite(streamBuffer);
+//     }
+//     olistener.sclose();
+// }
 
 
 /**
@@ -87,7 +86,7 @@ int main(int argc, char *argv[])
 
     std::thread serialListenerThread(openSerialPort, std::ref(dataSignal));
     std::thread guiInterfaceThread(guiInterface, argc, argv, std::ref(dataSignal));
-    std::thread outputListenerThread(outputNode, std::ref(dataSignal));
+    // std::thread outputListenerThread(outputNode, std::ref(dataSignal));
 
     if (serialListenerThread.joinable()) {
         std::cout << "[info]\t\tJoin the the serial listener thread!\n";
@@ -97,11 +96,6 @@ int main(int argc, char *argv[])
     if (guiInterfaceThread.joinable()) {
         std::cout << "[info]\t\tJoin the gui listener thread!\n";
         guiInterfaceThread.join();
-    }
-
-    if (outputListenerThread.joinable()) {
-        std::cout << "[info]\t\tJoin the output listener thread!\n";
-        outputListenerThread.join();
     }
     
     return 1;

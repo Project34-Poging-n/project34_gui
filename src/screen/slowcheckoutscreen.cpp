@@ -4,7 +4,11 @@
 #include <locale>
 
 
-#define MAX_TEXT_INPUT_SIZE 50
+#define MAX_TEXT_INPUT_SIZE 10
+
+
+static std::string od = "";
+static std::string dot = "";
 
 
 /**
@@ -127,29 +131,31 @@ std::string SlowCheckoutscreen::trim(const std::string& str)
 
 
 /**
- *
+ * Function to add the pincode to the box
  * 
  * @param data
 */
 void SlowCheckoutscreen::update_textbox(std::string data)
 {
-    std::string od = this->textbox.get_text();
-    // if (od == "bedr") {
-    //     od.erase();
-    // }
-
     data = this->trim(data);
 
     for (int i = 0; i < data.size(); i++) {
         std::cout << "In checkout scherm: " << (int)data[i] << "\n";
     }
-
-    if (this->_size < MAX_TEXT_INPUT_SIZE && data.size()>0 && od.size() < MAX_TEXT_INPUT_SIZE) {
-        od.append(data);
-        this->textbox.set_text(od);
-        std::cout << "Test: " << od << "\n";
+    
+    if (this->_get_current_number == 4) {
+        if (this->_size < MAX_TEXT_INPUT_SIZE && data.size()>0 && od.size() < MAX_TEXT_INPUT_SIZE) {
+            od.append(data);
+            dot.append("*");
+            this->textbox.set_text(dot);
+        }
+    } else {
+        // od.clear();
+        dot.clear();
+        this->textbox.set_text("");
     }
 
+    std::cout << "[info]\tPincode: " << od << "\n";
 }
 
 

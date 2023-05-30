@@ -25,6 +25,7 @@ class Successscreen
 
         Successscreen();
         virtual ~Successscreen();
+        void writeToDispenser(const char *amount);
         
     private:
 
