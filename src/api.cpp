@@ -5,6 +5,9 @@
 #include <string>
 
 
+#define RESPONSE_BUFFER_SIZE        1000
+
+
 static char* read_buffer = nullptr;
 static char *write_buffer = nullptr;
 
@@ -15,9 +18,11 @@ static char *write_buffer = nullptr;
  * @param object
  * @return std::string
 */
-std::string jsonToString(Json::Value const &object)
+std::string json_to_string(Json::Value &object)
 {
-    return object.toStyledString();
+    Json::StreamWriterBuilder wbuilder;
+    wbuilder["indentation"] = "";
+    return Json::writeString(wbuilder, object);
 }
 
 
@@ -47,13 +52,14 @@ size_t writeCallback(char *contents, size_t size, size_t nmemb, void *userp)
 
 /**
  * Function to get data from the api
+ * 
+ * @param url
+ * @param id
+ * @return Json::Value
 */
-Json::Value get_data(unsigned int id)
+Json::Value get_data(std::string url, unsigned int id)
 {
     CURL *curl = curl_easy_init();
-
-    // std::string url = "http://145.24.222.51:8081/get-data";
-    std::string url = "http://127.0.0.1:3000/";
 
     try {
         if (curl) {
@@ -68,7 +74,7 @@ Json::Value get_data(unsigned int id)
             curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
 
             // Buffer to store the data
-            char data[21];
+            char data[RESPONSE_BUFFER_SIZE];
 
             // Set a write function that will be called with the received data
             curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writeCallback);
@@ -79,7 +85,7 @@ Json::Value get_data(unsigned int id)
             if (curl != NULL) {
                 res = curl_easy_perform(curl);
             } else {
-                res /= CURLE_FAILED_INIT;
+                res = CURLE_FAILED_INIT;
             }
 
             // Check for errors and print the fetched data
@@ -103,7 +109,85 @@ Json::Value get_data(unsigned int id)
 }
 
 
-void send_data(Json::Value &object)
+/**
+ * Function to post data to a rest api
+ * 
+ * @param url
+ * @param object
+*/
+void send_data(std::string url, Json::Value &object)
 {
+    CURL *curl = curl_easy_init();
 
+    try {
+        if (curl) {
+            const int timeout = 30;
+            std::string body = json_to_string(object);
+
+            std::cout << "[info]\tsend: " << body << "\n";
+
+            curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
+
+            // setup headers for call
+            struct curl_slist *headers = NULL;
+            headers = curl_slist_append(headers, "Content-Type: application/json");
+            curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
+
+            // Set the data in the headers
+            curl_easy_setopt(curl, CURLOPT_POSTFIELDS, body.c_str());
+            curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, body.length());
+            curl_easy_setopt(curl, CURLOPT_POST, 1L);
+            curl_easy_setopt(curl, CURLOPT_TIMEOUT, timeout);
+
+            char data[RESPONSE_BUFFER_SIZE];
+
+            // Set a write function that will be called with the received data
+            curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writeCallback);
+            curl_easy_setopt(curl, CURLOPT_WRITEDATA, data);
+
+            // Perform the transfer
+            CURLcode res;
+            if (curl != NULL) {
+                res = curl_easy_perform(curl);
+            } else {
+                res = CURLE_FAILED_INIT;
+            }
+
+            if (res == CURLE_OK) {
+                std::cout << "Fetched data: " << data << std::endl;
+            } else {
+                std::cerr << "Error fetching data: " << curl_easy_strerror(res) << std::endl;
+            }
+
+            // Clean up
+            curl_slist_free_all(headers);
+            curl_easy_cleanup(curl);
+        }
+    } catch (const std::exception &e) {
+
+    }
+}
+
+
+/**
+ * Function to get a default json template to send the data
+ * 
+ * @return Json::Value
+*/
+Json::Value get_default_template()
+{
+    Json::Value root;
+
+    // Head information
+    root["head"]["fromCtry"]    = "UK";
+    root["head"]["fromBank"]    = "";
+    root["head"]["toCtry"]      = "";
+    root["head"]["toBank"]      = "";
+
+    // Body information
+    root["body"]["first_name"]  = "";
+    root["body"]["last_name"]   = "";
+    root["body"]["pin"]         = "";
+
+    return root;
 }
