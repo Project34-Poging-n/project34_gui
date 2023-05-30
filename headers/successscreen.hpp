@@ -20,15 +20,19 @@ class Successscreen
         Gtk::Entry l_entry1;
         Gtk::Image logo;
         
+        
     public:
         Gtk::Box vbox;
 
         Successscreen();
         virtual ~Successscreen();
         void writeToDispenser(const char *amount);
+        void setSignal(sigc::signal<void, std::string> &signal);
+        sigc::signal<void, std::string> getSignal();
         
     private:
-
+        sigc::signal<void, std::string> signal;
+        void trigger_timer(std::string data);
 };
 
 

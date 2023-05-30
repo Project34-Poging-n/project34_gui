@@ -27,6 +27,22 @@ std::string json_to_string(Json::Value &object)
 
 
 /**
+ * Convert a string to a json object
+ * 
+ * @param string
+ * @return Json::Value
+*/
+Json::Value string_to_json(std::string &string)
+{
+    Json::Value root;
+    Json::Reader reader;
+
+    reader.parse(string, root);
+    return root;
+}
+
+
+/**
  * Function to get the callback with the response data of the api
  * 
  * @param contents
@@ -63,12 +79,15 @@ size_t writeCallback(char *contents, size_t size, size_t nmemb, void *userp)
  * @param id
  * @return Json::Value
 */
-Json::Value get_data(std::string url, unsigned int id)
+Json::Value get_data(std::string url, std::string id)
 {
     CURL *curl = curl_easy_init();
+    // Buffer to store the data
+    char data[RESPONSE_BUFFER_SIZE];
 
     try {
         if (curl) {
+            url.append(id);
             curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
 
             // setup headers for call
@@ -78,9 +97,6 @@ Json::Value get_data(std::string url, unsigned int id)
             // curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
             curl_easy_setopt(curl, CURLOPT_HTTPGET, 1);
             curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
-
-            // Buffer to store the data
-            char data[RESPONSE_BUFFER_SIZE];
 
             // Set a write function that will be called with the received data
             curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writeCallback);
@@ -109,9 +125,8 @@ Json::Value get_data(std::string url, unsigned int id)
         // std::cout << "[error]\terror: " << e << "\n";
     }
 
-    Json::Value root;
-
-    return root;
+    std::string t = data;
+    return string_to_json(t);
 }
 
 

@@ -1,9 +1,12 @@
 #include <gtkmm.h>
 #include <iostream>
 #include <string>
+#include <chrono>
+#include <thread>
 #include "successscreen.hpp"
 #include "serial.hpp"
 #include "homescreen.hpp"
+#include "window.hpp"
 
 
 #define OUTPUT_SERIAL_PORT  "/dev/ttyACM1"
@@ -54,6 +57,7 @@ Successscreen::Successscreen()
     // Set LoginScreen properties
 
     // Print the money
+
 }
 
 
@@ -69,4 +73,39 @@ void Successscreen::writeToDispenser(const char *amount)
     olistener.sopen(OUTPUT_SERIAL_PORT);
     olistener.swrite(amount);
     olistener.sclose();
+}
+
+
+void Successscreen::trigger_timer(std::string data)
+{
+    if (get_current_stack_position() == 5) {
+        std::chrono::milliseconds delay(3000);
+        std::this_thread::sleep_for(delay);
+
+        reset_stack_to_position(2);
+        this->getSignal().emit("");
+    }
+}
+
+
+/**
+ * Function to enable the signal
+ * 
+ * @param signal 
+ */
+void Successscreen::setSignal(sigc::signal<void, std::string> &signal)
+{
+    this->signal = signal;
+    this->signal.connect(sigc::mem_fun(this, &Successscreen::trigger_timer));
+}
+
+
+/**
+ * Functio to get the signal for sending data over the threads
+ * 
+ * @return sigc::signal<void, std::string>
+ */
+sigc::signal<void, std::string> Successscreen::getSignal()
+{
+    return this->signal;
 }

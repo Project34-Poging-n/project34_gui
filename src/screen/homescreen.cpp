@@ -32,7 +32,7 @@ Homescreen::Homescreen()
     this->b_get.set_margin_end(30);
     this->b_get.set_alignment(0.9, 0.5);
     
-    this->b_put.set_text("Saldo storten     (C)");
+    this->b_put.set_text("uitloggen     (C)");
     this->b_put.override_background_color(Gdk::RGBA("#B9DBF5"));
     this->b_put.override_color(Gdk::RGBA("#FF4C4F"));
     this->b_put.override_font(font_desc1);

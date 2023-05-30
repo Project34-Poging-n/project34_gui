@@ -56,7 +56,9 @@ class Window : public Gtk::Window
 };
 
 
+int get_current_stack_position();
 void add_to_pagination_stack(int page);
+void reset_stack_to_position(int p);
 void remove_from_pagination_stack();
 
 

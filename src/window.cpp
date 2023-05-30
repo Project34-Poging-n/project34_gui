@@ -2,6 +2,7 @@
 #include <string>
 #include <gtkmm.h>
 #include <iostream>
+#include "api.hpp"
 
 
 #define WINDOW_WIDTH            1280
@@ -13,7 +14,7 @@
 
 static struct s_pageCell paginationTable[] = {
     { 0, "A", { 4, -1, -1, -1, -1} },
-    { 1, "ABC", { 2, 3, -1, -1, -1 } },
+    { 1, "ABC", { 2, 3, 0, -1, -1 } },
     { 2, "9", { 1, -1, -1, -1, -1 } },
     { 3, "ABCD9", { 4, 4, 4, 4, 1 } },
     { 4, "A9", { 5, 3, -1, -1, -1 } },
@@ -52,6 +53,7 @@ Window::Window(std::string title, sigc::signal<void, std::string> &signal)
     signal.connect(sigc::mem_fun(this, &Window::checkLogin));
 
     this->scs.setSignal(signal);
+    this->sss.setSignal(signal);
 
     // Add all pages to the nodebook
     this->notebook.append_page(this->ls.vbox, "Loginscreen");
@@ -106,7 +108,9 @@ void Window::checkLogin(std::string data)
                         } else {
                             std::cout << "[error]\tPage not found\n";
                         }
-                    } else {
+                    } else if (paginationStack[pp] == 1 && paginationTable[i].commands[j] == 'c') { 
+                        reset_stack_to_position(0);
+                    }else {
                         paginationStack[++pp] = paginationTable[i].newpage[j];
                     }
                 }
@@ -137,6 +141,24 @@ void Window::setPageReady(bool ready)
 bool Window::getPageReady()
 {
     return this->_ready_for_next_page;
+}
+
+
+void add_to_pagination_stack(int page)
+{
+    paginationStack[++pp] = page;
+}
+
+
+int get_current_stack_position()
+{
+    return paginationStack[pp];
+}
+
+
+void reset_stack_to_position(int p)
+{
+    pp = p;
 }
 
 

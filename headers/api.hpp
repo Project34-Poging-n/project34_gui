@@ -12,7 +12,7 @@
 Json::Value get_default_template();
 std::string json_to_string(Json::Value &object);
 Json::Value string_to_json(std::string &string);
-Json::Value get_data(std::string url, unsigned int id);
+Json::Value get_data(std::string url, std::string id);
 void send_data(std::string url, Json::Value &object);
 
 

@@ -3,6 +3,8 @@
 #include <iostream>
 #include <locale>
 #include <regex>
+#include <json/json.h>
+#include "api.hpp"
 
 
 #define MAX_TEXT_INPUT_SIZE     4
@@ -123,7 +125,7 @@ void SlowCheckoutscreen::update_textbox(std::string data)
             this->textbox.set_text(dot);
         }
     } else {
-        // od.clear();
+        od = "";
         dot = "";
         this->textbox.set_text("");
     }
@@ -139,7 +141,9 @@ void SlowCheckoutscreen::update_textbox(std::string data)
 */
 bool SlowCheckoutscreen::check_pincode()
 {
-    if (od == "1234") {
+    Json::Value result = get_data("http://127.0.0.1:3000/user/", "IBAN1234");
+
+    if (od == result["wachtwoord"].asCString()) {
         std::cout << "[info]\tJuiste pincode ingevoerd!";
         return true;
     }
