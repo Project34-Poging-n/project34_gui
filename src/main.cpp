@@ -68,11 +68,6 @@ int main(int argc, char *argv[])
 {
     sigc::signal<void, std::string> dataSignal;
 
-    get_data("http://127.0.0.1:3000/", "10");
-    Json::Value yomama = get_default_template();
-
-    send_data("http://127.0.0.1:3000/henk", yomama);
-
     std::thread serialListenerThread(openSerialPort, std::ref(dataSignal));
     std::thread guiInterfaceThread(guiInterface, argc, argv, std::ref(dataSignal));
 

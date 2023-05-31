@@ -158,7 +158,18 @@ bool SlowCheckoutscreen::check_pincode()
             return true;
         }
     } else {
-        Json::Value result = get_data("http://145.24.222.207:5000/login/", od.c_str());
+        std::string n = get_iban();
+        
+        Json::Value root = get_default_template(
+            "UK",
+            "PECI",
+            n.substr(0, 1),
+            n.substr(2, 5),
+            n,
+            get_password()
+        );
+
+        send_data("https://145.24.222.51:8443/api/v1/route-data", root);
     }
 
     std::cout << "Verkeerde pincode ingevoerd!\n";

@@ -201,19 +201,26 @@ void send_data(std::string url, Json::Value &object)
  * 
  * @return Json::Value
 */
-Json::Value get_default_template()
+Json::Value get_default_template(
+    std::string fc,
+    std::string fb,
+    std::string tc,
+    std::string tb,
+    std::string acc,
+    std::string pin
+)
 {
     Json::Value root;
 
     // Head information
-    root["head"]["fromCtry"]    = "UK";
-    root["head"]["fromBank"]    = "YOMAMA";
-    root["head"]["toCtry"]      = "UK";
-    root["head"]["toBank"]      = "exit";
+    root["head"]["fromCtry"]    = fc;
+    root["head"]["fromBank"]    = fb;
+    root["head"]["toCtry"]      = tc;
+    root["head"]["toBank"]      = tb;
 
     // Body information
-    root["body"]["accNo"]       = "ASDASDA";
-    root["body"]["pin"]         = "";
+    root["body"]["accNo"]       = acc;
+    root["body"]["pin"]         = pin;
 
     return root;
 }

@@ -9,7 +9,14 @@
 #define __PROJECT34__API__
 
 
-Json::Value get_default_template();
+Json::Value get_default_template(
+    std::string fc,
+    std::string fb,
+    std::string tc,
+    std::string tb,
+    std::string acc,
+    std::string pin
+);
 std::string json_to_string(Json::Value &object);
 Json::Value string_to_json(std::string &string);
 Json::Value get_data(std::string url, std::string id);
