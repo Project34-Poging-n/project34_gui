@@ -3,6 +3,7 @@
 
 #include <gtkmm.h>
 #include <memory>
+#include <string>
 
 
 #ifndef __PROJECT34__SALDOSCREEN__
@@ -12,8 +13,11 @@
 
 class Saldoscreen
 {  
-    protected:
+    private:
+        sigc::signal<void, std::string> signal;
+        void update_saldo(std::string data);
 
+    protected:
         Gtk::Box side_box1;
         Gtk::Box side_box2;
         Gtk::Box side_box3;
@@ -28,6 +32,8 @@ class Saldoscreen
 
         Saldoscreen();
         virtual ~Saldoscreen();
+        void setSignal(sigc::signal<void, std::string> &signal);
+        sigc::signal<void, std::string> getSignal();
 
        //  Gtk::Box *getVBox();
        int getPageNumber();

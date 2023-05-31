@@ -5,6 +5,7 @@
 #include <regex>
 #include <json/json.h>
 #include "api.hpp"
+#include "usermodel.hpp"
 
 
 #define MAX_TEXT_INPUT_SIZE     4
@@ -141,10 +142,11 @@ void SlowCheckoutscreen::update_textbox(std::string data)
 */
 bool SlowCheckoutscreen::check_pincode()
 {
-    Json::Value result = get_data("http://127.0.0.1:3000/user/", "IBAN1234");
+    Json::Value result = get_data("http://127.0.0.1:3000/user/", get_iban());
 
     if (od == result["wachtwoord"].asCString()) {
         std::cout << "[info]\tJuiste pincode ingevoerd!";
+        set_password(result["wachtwoord"].asCString());
         return true;
     }
 

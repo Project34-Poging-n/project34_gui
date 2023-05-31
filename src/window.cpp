@@ -3,6 +3,7 @@
 #include <gtkmm.h>
 #include <iostream>
 #include "api.hpp"
+#include "usermodel.hpp"
 
 
 #define WINDOW_WIDTH            1280
@@ -54,6 +55,7 @@ Window::Window(std::string title, sigc::signal<void, std::string> &signal)
 
     this->scs.setSignal(signal);
     this->sss.setSignal(signal);
+    this->ss.setSignal(signal);
 
     // Add all pages to the nodebook
     this->notebook.append_page(this->ls.vbox, "Loginscreen");
@@ -62,8 +64,11 @@ Window::Window(std::string title, sigc::signal<void, std::string> &signal)
     this->notebook.append_page(this->cs.vbox, "Checkoutscreen");
     this->notebook.append_page(this->scs.vbox, "FastCheckout");
     this->notebook.append_page(this->sss.vbox, "Successscreen");
+    this->notebook.set_show_tabs(false);
 
     add(this->notebook);
+
+    set_iban("IBAN1234");
 
     this->setCurrentPageNumber(0);
     paginationStack[pp] = 0;

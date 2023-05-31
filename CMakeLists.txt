@@ -24,6 +24,7 @@ set(HEADER_FILES
     headers/api.hpp
     headers/successscreen.hpp
     headers/routing.hpp
+    headers/usermodel.hpp
 )
 
 # Define all cxx files in the project
@@ -45,6 +46,7 @@ set(GUI_FILES
 set(API_FILES
     src/api.cpp
     src/routing.cpp
+    src/usermodel.cpp
 )
 
 # Configure GTK+

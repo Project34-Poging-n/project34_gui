@@ -1,5 +1,10 @@
 #include <gtkmm.h>
+#include <json/json.h>
+#include <string>
 #include "saldoscreen.hpp"
+#include "window.hpp"
+#include "api.hpp"
+#include "usermodel.hpp"
 
 
 Saldoscreen::Saldoscreen()
@@ -9,13 +14,13 @@ Saldoscreen::Saldoscreen()
     this->vbox.override_background_color(Gdk::RGBA("#B9DBF5"));
 
     // Set child elements
-    this->l_label1.set_text("Uw Saldo: ");
+    this->l_label1.set_text("Uw Saldo bedraagt: ");
     this->l_label1.override_color(Gdk::RGBA("#B9DBF5"));
     Pango::FontDescription font_desc1;
     font_desc1.set_size(40 * PANGO_SCALE);
     this->l_label1.override_font(font_desc1);
 
-    this->l_label2.set_text("€ 500.00");
+    this->l_label2.set_text("€ 00.00");
     this->l_label2.override_color(Gdk::RGBA("#B9DBF5"));
     Pango::FontDescription font_desc2;
     font_desc2.set_size(40 * PANGO_SCALE);
@@ -72,3 +77,28 @@ Saldoscreen::~Saldoscreen()
 {
     
 }   
+
+
+void Saldoscreen::update_saldo(std::string data)
+{
+    if (get_current_stack_position() == 2) {
+        std::string t = "€ ";
+        Json::Value j = get_data("http://127.0.0.1:3000/getmoney/", get_iban());
+        t = t + j["balans"].asCString();
+
+        this->l_label2.set_text(t);
+    }
+}
+
+
+void Saldoscreen::setSignal(sigc::signal<void, std::string> &signal)
+{
+   this->signal = signal;
+    this->signal.connect(sigc::mem_fun(this, &Saldoscreen::update_saldo));
+}
+
+
+sigc::signal<void, std::string> Saldoscreen::getSignal()
+{
+    return this->signal;
+}
