@@ -116,6 +116,8 @@ void SlowCheckoutscreen::update_textbox(std::string data)
 {
     std::regex pattern("^[0-9]+$");
     data = this->trim(data);
+
+    std::cout << "[info]\tIban: " << get_iban() << "\n";
     
     if (this->_get_current_number == 4) {
         if (this->_size < MAX_TEXT_INPUT_SIZE && data.size()>0 && od.size() < MAX_TEXT_INPUT_SIZE) {
@@ -142,12 +144,21 @@ void SlowCheckoutscreen::update_textbox(std::string data)
 */
 bool SlowCheckoutscreen::check_pincode()
 {
-    Json::Value result = get_data("http://127.0.0.1:3000/user/", get_iban());
+    if (get_iban().find("UK") != std::string::npos)
+    {
+        std::string url = "http://145.24.222.207:5000/login/";
+        url.append(get_iban());
+        url.append("/");
 
-    if (od == result["wachtwoord"].asCString()) {
-        std::cout << "[info]\tJuiste pincode ingevoerd!";
-        set_password(result["wachtwoord"].asCString());
-        return true;
+        Json::Value result = get_data(url, od.c_str());
+
+        if (result["status"].asBool() == true && result["pincode"] == od) {
+            std::cout << "[info]\tJuiste pincode ingevoerd!";
+            set_password(result["pincode"].asCString());
+            return true;
+        }
+    } else {
+        Json::Value result = get_data("http://145.24.222.207:5000/login/", od.c_str());
     }
 
     std::cout << "Verkeerde pincode ingevoerd!\n";

@@ -7,7 +7,7 @@ static std::string upassword;
 static std::string uiban;
 
 
-void set_username(std::string &name)
+void set_username(std::string const &name)
 {
     uname = name;
 }

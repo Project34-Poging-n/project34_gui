@@ -68,8 +68,6 @@ Window::Window(std::string title, sigc::signal<void, std::string> &signal)
 
     add(this->notebook);
 
-    set_iban("IBAN1234");
-
     this->setCurrentPageNumber(0);
     paginationStack[pp] = 0;
     pp++;
@@ -98,10 +96,13 @@ void Window::checkLogin(std::string data)
     for (int i = 0; i < PAGINATION_SIZE; i++) {
         if (paginationTable[i].page == this->getCurrentPageNumber()) {
             size_t commandSize = paginationTable[i].commands.length();
-            std::cout << "[info]\tPagination command size: " << commandSize << " with page number: " << this->getCurrentPageNumber() << "\n";
-
             for (int j = 0; j < commandSize; j++) {
-                if (data.find(paginationTable[i].commands[j]) != std::string::npos) {
+                if (this->getCurrentPageNumber() == 0 && data.length() >= 14) {
+                    data = this->scs.trim(data);
+                    paginationStack[++pp] = 4;
+                    set_iban(data);
+                    std::cout << "[info]\tlength: " << data.length() << "\n";
+                } else if (data.find(paginationTable[i].commands[j]) != std::string::npos) {
                     if (paginationStack[pp] == 4) {
                         std::cout << "[info]\tPrevious: " << paginationStack[pp-1];
 
@@ -109,12 +110,23 @@ void Window::checkLogin(std::string data)
                             paginationStack[++pp] = 1;
                         } else if (this->scs.check_pincode() && (paginationStack[pp-1] == 3)) {
                             // this->sss.writeToDispenser("20");
+
+                            Json::Value root;
+                            root["iban"]    = get_iban();
+                            root["pincode"] = get_password();
+                            root["balance"] = 20;
+
+                            send_data("http://145.24.222.207:5000/withdraw/"+get_iban(), root);
+                            // send_data("http://127.0.0.1:3000/henk/"+get_iban(), root);
                             paginationStack[++pp] = 5;
                         } else {
                             std::cout << "[error]\tPage not found\n";
                         }
                     } else if (paginationStack[pp] == 1 && paginationTable[i].commands[j] == 'c') { 
                         reset_stack_to_position(0);
+                        set_username("");
+                        // set_iban("");
+                        set_password("");
                     }else {
                         paginationStack[++pp] = paginationTable[i].newpage[j];
                     }

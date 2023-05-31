@@ -88,6 +88,9 @@ Json::Value get_data(std::string url, std::string id)
     try {
         if (curl) {
             url.append(id);
+
+            std::cout << "[GET]\turl: " << url << "\n";
+
             curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
 
             // setup headers for call
@@ -145,7 +148,7 @@ void send_data(std::string url, Json::Value &object)
             const int timeout = 30;
             std::string body = json_to_string(object);
 
-            std::cout << "[info]\tsend: " << body << "\n";
+            std::cout << "[info]\tsend: " << url.c_str() << "\n";
 
             curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
 
@@ -155,7 +158,7 @@ void send_data(std::string url, Json::Value &object)
             curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
 
             // Set certificate options
-            curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L);
+            // curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L);
 
             // Set the data in the headers
             curl_easy_setopt(curl, CURLOPT_POSTFIELDS, body.c_str());

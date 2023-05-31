@@ -81,10 +81,12 @@ Saldoscreen::~Saldoscreen()
 
 void Saldoscreen::update_saldo(std::string data)
 {
+
     if (get_current_stack_position() == 2) {
         std::string t = "€ ";
-        Json::Value j = get_data("http://127.0.0.1:3000/getmoney/", get_iban());
-        t = t + j["balans"].asCString();
+        Json::Value j = get_data("http://145.24.222.207:5000/balance/", get_iban());
+        long balance = j["balance"].asInt64();
+        t = t + std::to_string(balance);
 
         this->l_label2.set_text(t);
     }
