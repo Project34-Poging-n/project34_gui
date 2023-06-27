@@ -17,9 +17,9 @@
 
 static struct s_pageCell paginationTable[] = {
     { 0, "*", { 4, -1, -1, -1, -1} },
-    { 1, "*BC", { 2, 3, 0, -1, -1 } },
+    { 1, "ABC", { 2, 3, 0, -1, -1 } },
     { 2, "#", { 1, -1, -1, -1, -1 } },
-    { 3, "*BCD#", { 4, 4, 4, 4, 1 } },
+    { 3, "ABCD#", { 4, 4, 4, 4, 1 } },
     { 4, "*#", { 5, 3, -1, -1, -1 } },
     { 5, "", { 1, -1, -1, -1, -1, } }
 };
@@ -121,8 +121,10 @@ void Window::checkLogin(std::string data)
                             root["pincode"]     = get_password();
                             root["balance"]     = FAST_MONEY;
 
-                            std::string bp = get_iban() + "_" + std::to_string(FAST_MONEY) + "_" + "dd-mm-yyyy";
+                            std::string bp = "dd-mm-yyyy_13:00:00_" + std::to_string(FAST_MONEY) + "_" + get_iban() + "_" + "print";
                             this->sss.writeToDispenser(bp.c_str());
+
+                            std::cout << bp.c_str() << "\n";
 
                             send_data("http://145.24.222.207:5000/withdraw", root);
                             // send_data("http://127.0.0.1:3000/henk/"+get_iban(), root);

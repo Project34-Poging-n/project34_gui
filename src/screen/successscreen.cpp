@@ -81,6 +81,8 @@ void Successscreen::writeToDispenser(const char *amount)
     std::cout << "[info]\tMoneyDispenser called\n";
     olistener.sopen(OUTPUT_SERIAL_PORT);
     olistener.swrite(amount);
+    std::chrono::milliseconds delay(3000);
+    std::this_thread::sleep_for(delay);
     olistener.sclose();
 }
 

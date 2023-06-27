@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <cstring>
 
 // Check if the program is runned on windows, then include the windows api library
 #ifdef _WIN32
@@ -172,7 +173,9 @@ void SerialListener::swrite(const char *message)
 #endif
 
 #ifdef __unix__
-    short result = write(this->getHSerial(), message, sizeof(message));
+    std::cout << "Bericht: " << message <<"\n";
+
+    short result = write(this->getHSerial(), message, strlen(message));
 
     if (result == -1) {
         std::cerr << "[error]\tCan't write the buffer to the output node\n";
