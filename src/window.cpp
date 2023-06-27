@@ -2,6 +2,7 @@
 #include <string>
 #include <gtkmm.h>
 #include <iostream>
+#include <chrono>
 #include "api.hpp"
 #include "usermodel.hpp"
 
@@ -11,14 +12,15 @@
 #define DEFAULT_PATH_FOR_CSS    "../css/style.css"
 #define PAGINATION_SIZE         5
 #define PAGINATION_STACK_SIZE   10
+#define FAST_MONEY              75
 
 
 static struct s_pageCell paginationTable[] = {
-    { 0, "A", { 4, -1, -1, -1, -1} },
-    { 1, "ABC", { 2, 3, 0, -1, -1 } },
-    { 2, "9", { 1, -1, -1, -1, -1 } },
-    { 3, "ABCD9", { 4, 4, 4, 4, 1 } },
-    { 4, "A9", { 5, 3, -1, -1, -1 } },
+    { 0, "*", { 4, -1, -1, -1, -1} },
+    { 1, "*BC", { 2, 3, 0, -1, -1 } },
+    { 2, "#", { 1, -1, -1, -1, -1 } },
+    { 3, "*BCD#", { 4, 4, 4, 4, 1 } },
+    { 4, "*#", { 5, 3, -1, -1, -1 } },
     { 5, "", { 1, -1, -1, -1, -1, } }
 };
 
@@ -103,20 +105,26 @@ void Window::checkLogin(std::string data)
                     set_iban(data);
                     std::cout << "[info]\tlength: " << data.length() << "\n";
                 } else if (data.find(paginationTable[i].commands[j]) != std::string::npos) {
+                    // if (paginationTable[i].commands[j] == '#') {
+                    //     pp--;
+                    //     break;
+                    // }
+                    
                     if (paginationStack[pp] == 4) {
                         std::cout << "[info]\tPrevious: " << paginationStack[pp-1];
 
-                        if (paginationStack[pp-1] == 0 && this->scs.check_pincode()) {
+                        if (paginationStack[pp-1] == 0 && this->scs.check_pincode() && paginationTable[i].commands[j] == '*') {
                             paginationStack[++pp] = 1;
-                        } else if (this->scs.check_pincode() && (paginationStack[pp-1] == 3)) {
-                            // this->sss.writeToDispenser("20");
-
+                        } else if (this->scs.check_pincode() && (paginationStack[pp-1] == 3) && paginationTable[i].commands[j] == '*') {
                             Json::Value root;
-                            root["iban"]    = get_iban();
-                            root["pincode"] = get_password();
-                            root["balance"] = 20;
+                            root["account"]     = get_iban();
+                            root["pincode"]     = get_password();
+                            root["balance"]     = FAST_MONEY;
 
-                            send_data("http://145.24.222.207:5000/withdraw/"+get_iban(), root);
+                            std::string bp = get_iban() + "_" + std::to_string(FAST_MONEY) + "_" + "dd-mm-yyyy";
+                            this->sss.writeToDispenser(bp.c_str());
+
+                            send_data("http://145.24.222.207:5000/withdraw", root);
                             // send_data("http://127.0.0.1:3000/henk/"+get_iban(), root);
                             paginationStack[++pp] = 5;
                         } else {

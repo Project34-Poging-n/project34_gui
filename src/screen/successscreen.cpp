@@ -61,12 +61,21 @@ Successscreen::Successscreen()
 }
 
 
+/**
+ * Destructor
+ * 
+*/
 Successscreen::~Successscreen()
 {
     
 }
 
 
+/**
+ * Function to write to the money dispenser
+ * 
+ * @param amount
+*/
 void Successscreen::writeToDispenser(const char *amount)
 {
     std::cout << "[info]\tMoneyDispenser called\n";
@@ -76,13 +85,18 @@ void Successscreen::writeToDispenser(const char *amount)
 }
 
 
+/**
+ * Function to trigger the timer to return
+ * 
+ * @param data  
+*/
 void Successscreen::trigger_timer(std::string data)
 {
     if (get_current_stack_position() == 5) {
         std::chrono::milliseconds delay(3000);
         std::this_thread::sleep_for(delay);
 
-        reset_stack_to_position(2);
+        reset_stack_to_position(3);
         this->getSignal().emit("");
     }
 }

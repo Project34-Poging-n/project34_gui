@@ -31,25 +31,25 @@ Checkoutscreen::Checkoutscreen()
     this->fastp.set_margin_end(30);
     this->fastp.set_alignment(0.9, 0.5);
 
-    this->fastp.set_text("€ 50     (B)");
-    this->fastp.override_background_color(Gdk::RGBA("#B9DBF5"));
-    this->fastp.override_color(Gdk::RGBA("#FF4C4F"));\
-    this->fastp.override_font(font_desc1);
-    this->fastp.set_margin_top(BAR_MARGIN);
-    this->fastp.set_margin_bottom(BAR_MARGIN);
-    this->fastp.set_margin_start(270);
-    this->fastp.set_margin_end(30);
-    this->fastp.set_alignment(0.9, 0.5);
+    this->fastp2.set_text("€ 50     (B)");
+    this->fastp2.override_background_color(Gdk::RGBA("#B9DBF5"));
+    this->fastp2.override_color(Gdk::RGBA("#FF4C4F"));\
+    this->fastp2.override_font(font_desc1);
+    this->fastp2.set_margin_top(BAR_MARGIN);
+    this->fastp2.set_margin_bottom(BAR_MARGIN);
+    this->fastp2.set_margin_start(270);
+    this->fastp2.set_margin_end(30);
+    this->fastp2.set_alignment(0.9, 0.5);
 
-    this->fastp.set_text("€ 20     (C)");
-    this->fastp.override_background_color(Gdk::RGBA("#B9DBF5"));
-    this->fastp.override_color(Gdk::RGBA("#FF4C4F"));\
-    this->fastp.override_font(font_desc1);
-    this->fastp.set_margin_top(BAR_MARGIN);
-    this->fastp.set_margin_bottom(BAR_MARGIN);
-    this->fastp.set_margin_start(270);
-    this->fastp.set_margin_end(30);
-    this->fastp.set_alignment(0.9, 0.5);
+    this->fastp3.set_text("€ 20     (C)");
+    this->fastp3.override_background_color(Gdk::RGBA("#B9DBF5"));
+    this->fastp3.override_color(Gdk::RGBA("#FF4C4F"));\
+    this->fastp3.override_font(font_desc1);
+    this->fastp3.set_margin_top(BAR_MARGIN);
+    this->fastp3.set_margin_bottom(BAR_MARGIN);
+    this->fastp3.set_margin_start(270);
+    this->fastp3.set_margin_end(30);
+    this->fastp3.set_alignment(0.9, 0.5);
 
     this->slowp.set_text("Ander bedrag  (D)");
     this->slowp.override_background_color(Gdk::RGBA("#B9DBF5"));
@@ -62,13 +62,13 @@ Checkoutscreen::Checkoutscreen()
     this->slowp.set_margin_end(30);
     this->slowp.set_alignment(0.9, 0.5);
 
-    this->back.set_text("Terug    (3)");
+    this->back.set_text("Terug    (#)");
     this->back.override_background_color(Gdk::RGBA("#B9DBF5"));
     this->back.override_color(Gdk::RGBA("#FF4C4F"));\
     Pango::FontDescription font_desc3;
     font_desc3.set_size(18 * PANGO_SCALE);
     this->back.override_font(font_desc3);
-    this->back.set_margin_top(200);
+    this->back.set_margin_top(50);
     this->back.set_margin_bottom(30);
     this->back.set_margin_start(570);
     this->back.set_margin_end(0);

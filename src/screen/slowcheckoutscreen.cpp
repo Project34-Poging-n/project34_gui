@@ -63,7 +63,7 @@ SlowCheckoutscreen::SlowCheckoutscreen()
     font_desc2.set_size(40 * PANGO_SCALE);
     this->textbox.override_font(font_desc1);
 
-    this->back.set_text("Terug    (3)");
+    this->back.set_text("Terug    (#)");
     this->back.override_background_color(Gdk::RGBA("#B9DBF5"));
     this->back.override_color(Gdk::RGBA("#FF4C4F"));\
     Pango::FontDescription font_desc3;
@@ -143,34 +143,20 @@ void SlowCheckoutscreen::update_textbox(std::string data)
  * @return bool
 */
 bool SlowCheckoutscreen::check_pincode()
-{
-    if (get_iban().find("UK") != std::string::npos)
-    {
-        std::string url = "http://145.24.222.207:5000/login/";
-        url.append(get_iban());
-        url.append("/");
+{   
+    Json::Value root;
 
-        Json::Value result = get_data(url, od.c_str());
+    root["account"]    = get_iban();
+    root["pincode"] = od; 
 
-        if (result["status"].asBool() == true && result["pincode"] == od) {
-            std::cout << "[info]\tJuiste pincode ingevoerd!";
-            set_password(result["pincode"].asCString());
-            return true;
-        }
-    } else {
-        std::string n = get_iban();
-        
-        Json::Value root = get_default_template(
-            "UK",
-            "PECI",
-            n.substr(0, 1),
-            n.substr(2, 5),
-            n,
-            get_password()
-        );
+    std::string url = "http://145.24.222.207:5000/login";
+    Json::Value result = send_data(url, root);
 
-        send_data("https://145.24.222.51:8443/api/v1/route-data", root);
-    }
+    if (result["status"].asBool() == true && result["pincode"] == od) {
+        std::cout << "[info]\tJuiste pincode ingevoerd!";
+        set_password(result["pincode"].asCString());
+        return true;
+    } 
 
     std::cout << "Verkeerde pincode ingevoerd!\n";
     dot = "";

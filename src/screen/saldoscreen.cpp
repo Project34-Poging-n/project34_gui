@@ -27,7 +27,7 @@ Saldoscreen::Saldoscreen()
     this->l_label2.override_font(font_desc2);
     this->l_label2.set_alignment(0.5, 0.0);
 
-    this->l_label3.set_text("Terug    (3)");
+    this->l_label3.set_text("Terug    (#)");
     this->l_label3.override_background_color(Gdk::RGBA("#B9DBF5"));
     this->l_label3.override_color(Gdk::RGBA("#FF4C4F"));\
     Pango::FontDescription font_desc3;
@@ -73,19 +73,31 @@ Saldoscreen::Saldoscreen()
 }
 
 
+/**
+ * Destructor
+ * 
+*/
 Saldoscreen::~Saldoscreen()
 {
     
 }   
 
 
+/**
+ * Function 
+ * 
+*/
 void Saldoscreen::update_saldo(std::string data)
 {
-
     if (get_current_stack_position() == 2) {
         std::string t = "€ ";
-        Json::Value j = get_data("http://145.24.222.207:5000/balance/", get_iban());
-        long balance = j["balance"].asInt64();
+        Json::Value root;
+
+        root["account"]    = get_iban();
+
+        std::string url = "http://145.24.222.207:5000/balance";
+        Json::Value result = send_data(url, root);
+        long balance = result["balance"].asInt64();
         t = t + std::to_string(balance);
 
         this->l_label2.set_text(t);
@@ -93,6 +105,11 @@ void Saldoscreen::update_saldo(std::string data)
 }
 
 
+/**
+ * Function to set the communication signal
+ * 
+ * @param signal
+*/
 void Saldoscreen::setSignal(sigc::signal<void, std::string> &signal)
 {
    this->signal = signal;
@@ -100,6 +117,11 @@ void Saldoscreen::setSignal(sigc::signal<void, std::string> &signal)
 }
 
 
+/**
+ * Function to get the signal
+ * 
+ * @return sigc::signal<void, std::string>
+*/
 sigc::signal<void, std::string> Saldoscreen::getSignal()
 {
     return this->signal;

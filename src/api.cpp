@@ -89,8 +89,6 @@ Json::Value get_data(std::string url, std::string id)
         if (curl) {
             url.append(id);
 
-            std::cout << "[GET]\turl: " << url << "\n";
-
             curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
 
             // setup headers for call
@@ -139,16 +137,18 @@ Json::Value get_data(std::string url, std::string id)
  * @param url
  * @param object
 */
-void send_data(std::string url, Json::Value &object)
+Json::Value send_data(std::string url, Json::Value &object)
 {
     CURL *curl = curl_easy_init();
+    char data[RESPONSE_BUFFER_SIZE];
 
     try {
         if (curl) {
             const int timeout = 30;
             std::string body = json_to_string(object);
 
-            std::cout << "[info]\tsend: " << url.c_str() << "\n";
+            // Set certificate options
+            curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L);
 
             curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
 
@@ -157,16 +157,13 @@ void send_data(std::string url, Json::Value &object)
             headers = curl_slist_append(headers, "Content-Type: application/json");
             curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
 
-            // Set certificate options
-            // curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L);
+
 
             // Set the data in the headers
             curl_easy_setopt(curl, CURLOPT_POSTFIELDS, body.c_str());
             curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, body.length());
             curl_easy_setopt(curl, CURLOPT_POST, 1L);
             curl_easy_setopt(curl, CURLOPT_TIMEOUT, timeout);
-
-            char data[RESPONSE_BUFFER_SIZE];
 
             // Set a write function that will be called with the received data
             curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writeCallback);
@@ -193,6 +190,9 @@ void send_data(std::string url, Json::Value &object)
     } catch (const std::exception &e) {
 
     }
+
+    std::string t = data;
+    return string_to_json(t);
 }
 
 
