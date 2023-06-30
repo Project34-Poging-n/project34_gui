@@ -13,6 +13,7 @@
 
 static std::string od = "";
 static std::string dot = "";
+static unsigned int pc = 0;
 
 
 /**
@@ -149,7 +150,15 @@ bool SlowCheckoutscreen::check_pincode()
     root["account"]    = get_iban();
     root["pincode"] = od; 
 
-    std::string url = "http://145.24.222.207:5000/login";
+    if (pc >= 3) {
+        std::string url = "http://127.0.0.1:5000/block";
+        send_data(url, root);
+        std::cout << "[info]\tPassword blocked!\n";
+        return false;
+    }
+
+    // std::string url = "http://145.24.222.207:5000/login";
+    std::string url = "http://127.0.0.1:5000/login";
     Json::Value result = send_data(url, root);
 
     if (result["status"].asBool() == true && result["pincode"] == od) {
@@ -162,6 +171,7 @@ bool SlowCheckoutscreen::check_pincode()
     dot = "";
     od = "";
     this->textbox.set_text(dot);
+    pc++;
     return false;
 }
 
@@ -187,5 +197,3 @@ sigc::signal<void, std::string> SlowCheckoutscreen::getSignal()
 {
     return this->signal;
 }
-
-

@@ -12,6 +12,7 @@
 #include "fastcheckoutscreen.hpp"
 #include "biljetscreen.hpp"
 #include "fastcheckoutscreen.hpp"
+#include "receiptscreen.hpp"
 
 
 #ifndef __PROJECT34__WINDOW__
@@ -48,6 +49,7 @@ class Window : public Gtk::Window
         Successscreen       sss;
         FastCheckoutscreen  fcs;
         Biljetscreen        bjs;
+        Receiptscreen       rss;
 
     public:
         Window(std::string title, sigc::signal<void, std::string> &signal);

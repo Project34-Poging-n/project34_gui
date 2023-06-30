@@ -95,7 +95,8 @@ void Saldoscreen::update_saldo(std::string data)
 
         root["account"]    = get_iban();
 
-        std::string url = "http://145.24.222.207:5000/balance";
+        // std::string url = "http://145.24.222.207:5000/balance";
+        std::string url = "http://127.0.0.1:5000/balance";
         Json::Value result = send_data(url, root);
         long balance = result["balance"].asInt64();
         t = t + std::to_string(balance);
