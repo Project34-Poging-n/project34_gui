@@ -14,6 +14,7 @@ class FastCheckoutscreen
         void update_textbox(std::string data);
         sigc::signal<void, std::string> signal;
         int _size;
+        std::string _moneyyy;
         
 
     protected:
@@ -27,6 +28,7 @@ class FastCheckoutscreen
         Gtk::Entry textbox;
         Gtk::Label back;
 
+
     public:
         Gtk::Box vbox;
         int _get_current_number;
@@ -36,6 +38,7 @@ class FastCheckoutscreen
         void setSignal(sigc::signal<void, std::string> &signal);
         sigc::signal<void, std::string> getSignal();
         std::string trim(const std::string& str);
+        std::string getMoneyAmount();
 };
 
 #endif

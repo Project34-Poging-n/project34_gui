@@ -31,7 +31,7 @@ Checkoutscreen::Checkoutscreen()
     this->fastp.set_margin_end(30);
     this->fastp.set_alignment(0.9, 0.5);
 
-    this->slowp.set_text("Ander bedrag  (D)");
+    this->slowp.set_text("Ander bedrag  (B)");
     this->slowp.override_background_color(Gdk::RGBA("#B9DBF5"));
     this->slowp.override_color(Gdk::RGBA("#FF4C4F"));\
     font_desc1.set_size(30 * PANGO_SCALE);

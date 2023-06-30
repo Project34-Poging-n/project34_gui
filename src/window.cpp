@@ -10,7 +10,7 @@
 #define WINDOW_WIDTH            1280
 #define WINDOW_HEIGHT           720
 #define DEFAULT_PATH_FOR_CSS    "../css/style.css"
-#define PAGINATION_SIZE         5
+#define PAGINATION_SIZE         15
 #define PAGINATION_STACK_SIZE   30
 #define FAST_MONEY              75
 
@@ -61,6 +61,7 @@ Window::Window(std::string title, sigc::signal<void, std::string> &signal)
     this->scs.setSignal(signal);
     this->sss.setSignal(signal);
     this->ss.setSignal(signal);
+    this->fcs.setSignal(signal);
 
     // Add all pages to the nodebook
     this->notebook.append_page(this->ls.vbox, "Loginscreen");
@@ -100,6 +101,7 @@ Window::~Window()
  */
 void Window::checkLogin(std::string data)
 {
+    std::cout << "Yoo: " << paginationStack[pp] << " current: " << this->getCurrentPageNumber() << "\n";
     for (int i = 0; i < PAGINATION_SIZE; i++) {
         if (paginationTable[i].page == this->getCurrentPageNumber()) {
             size_t commandSize = paginationTable[i].commands.length();
@@ -114,12 +116,16 @@ void Window::checkLogin(std::string data)
                     //     pp--;
                     //     break;
                     // }
+
+                    std::cout << "Hij is hier!!" << "\n";
                     
                     if (paginationStack[pp] == 4) {
                         std::cout << "[info]\tPrevious: " << paginationStack[pp-1];
 
                         if (paginationStack[pp-1] == 0 && this->scs.check_pincode() && paginationTable[i].commands[j] == '*') {
+                            std::cout << "hij is hier!";
                             paginationStack[++pp] = 1;
+                            break;
                         } else if (this->scs.check_pincode() && (paginationStack[pp-1] == 3) && paginationTable[i].commands[j] == '*') {
                             Json::Value root;
                             root["account"]     = get_iban();
@@ -132,31 +138,56 @@ void Window::checkLogin(std::string data)
                             std::cout << bp.c_str() << "\n";
 
                             send_data("http://145.24.222.207:5000/withdraw", root);
-                            // send_data("http://127.0.0.1:3000/henk/"+get_iban(), root);
                             paginationStack[++pp] = 5;
+                            break;
                         } else if (this->scs.check_pincode() && (paginationStack[pp-1] == 7) && paginationTable[i].commands[j] == '*') {
                             
                         }
-
-                        if ((paginationStack[pp-1] == 6) && paginationTable[i].commands[i] == '*') {
-
-                        }
-
-                        if ((paginationStack[pp-1] == 6) && paginationTable[i].commands[i] == 'A') {
-                            this->_money = 50;
-                        } else if ((paginationStack[pp-1] == 6) && paginationTable[i].commands[i] == 'B') {
-                            this->_money = 20;
-                        } else if ((paginationStack[pp-1] == 6) && paginationTable[i].commands[i] == 'C') {
-                            this->_money = 5;
-                        }
-
 
                     } else if (paginationStack[pp] == 1 && paginationTable[i].commands[j] == 'c') { 
                         reset_stack_to_position(0);
                         set_username("");
                         // set_iban("");
                         set_password("");
-                    }else {
+                    } else if (paginationStack[pp] == 8 && paginationTable[i].commands[i] == 'A') {
+                        Json::Value root;
+                        root["account"]     = get_iban();
+                        root["pincode"]     = get_password();
+                        root["balance"]     = this->_money_amount;
+
+                        std::string bp = "dd-mm-yyyy_13:00:00_" + std::to_string(this->_money_amount) + "_" + get_iban() + "_" + "print";
+                        this->sss.writeToDispenser(bp.c_str());
+
+                        std::cout << bp.c_str() << "\n";
+
+                        send_data("http://145.24.222.207:5000/withdraw", root);
+                        paginationStack[++pp] = 5;
+                        break;
+                    } else if (paginationStack[pp] == 8 && paginationTable[i].commands[i] == 'B') {
+                        Json::Value root;
+                        root["account"]     = get_iban();
+                        root["pincode"]     = get_password();
+                        root["balance"]     = this->_money_amount;
+
+                        std::string bp = "dd-mm-yyyy_13:00:00_" + std::to_string(this->_money_amount) + "_" + get_iban() + "_" + "notprint";
+                        this->sss.writeToDispenser(bp.c_str());
+
+                        std::cout << bp.c_str() << "\n";
+
+                        send_data("http://145.24.222.207:5000/withdraw", root);
+                        paginationStack[++pp] = 5;
+                        break;
+                    } else if (paginationStack[pp] == 6 && paginationTable[i].commands[i] == '*') {
+                        // this->_money_amount = atoi(fcs.getMoneyAmount().c_str());
+                        // std::cout << "Hij is hier oook!!" << "\n";
+                        this->_money_amount = 10;
+                    } if (paginationStack[pp-1] == 6 && paginationTable[i].commands[i] == 'A') {
+                        this->_money = 50;
+                    } else if (paginationStack[pp-1] == 6 && paginationTable[i].commands[i] == 'B') {
+                        this->_money = 20;
+                    } else if (paginationStack[pp-1] == 6 && paginationTable[i].commands[i] == 'C') {
+                        this->_money = 5;
+                    } else {
                         paginationStack[++pp] = paginationTable[i].newpage[j];
                     }
                 }
@@ -166,6 +197,7 @@ void Window::checkLogin(std::string data)
 
     this->setCurrentPageNumber(paginationStack[pp]);
     this->scs._get_current_number = paginationStack[pp];
+    this->fcs._get_current_number = paginationStack[pp];
 }
 
 

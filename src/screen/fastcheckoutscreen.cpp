@@ -11,8 +11,8 @@
 #define MAX_TEXT_INPUT_SIZE     4
 
 
-static std::string od = "";
-static std::string dot = "";
+static std::string yomama = "";
+static std::string yomama2 = "";
 
 
 /**
@@ -49,7 +49,7 @@ FastCheckoutscreen::FastCheckoutscreen()
     this->logo.set_size_request(pixbuf->get_width(), pixbuf->get_height());
 
     // Set child elements
-    this->title.set_text("Voer uw pincode in: ");
+    this->title.set_text("Voer een bedrag in: ");
     this->title.override_color(Gdk::RGBA("#B9DBF5"));
     Pango::FontDescription font_desc1;
     font_desc1.set_size(40 * PANGO_SCALE);
@@ -117,23 +117,21 @@ void FastCheckoutscreen::update_textbox(std::string data)
     std::regex pattern("^[0-9]+$");
     data = this->trim(data);
 
-    std::cout << "[info]\tIban: " << get_iban() << "\n";
-    
-    if (this->_get_current_number == 4) {
-        if (this->_size < MAX_TEXT_INPUT_SIZE && data.size()>0 && od.size() < MAX_TEXT_INPUT_SIZE) {
-            if (std::regex_match(data, pattern)) {
-                od.append(data);
-                dot.append(data);
-            }
-            this->textbox.set_text(dot);
+    std::cout << "[info]\t--- Bedrag: ---\n";
+            std::cout << data << "\n";
+    if (this->_get_current_number == 6) {
+        if (std::regex_match(data, pattern)) {
+            this->_moneyyy.append(data);
+            yomama2.append(data);
         }
+        this->textbox.set_text(yomama2);
     } else {
-        od = "";
-        dot = "";
+        yomama2 = "";
         this->textbox.set_text("");
+        this->_moneyyy = "";
     }
 
-    std::cout << "[info]\tPincode: " << od << "\n";
+    std::cout << "[info]\tPincode: " << this->_moneyyy << "\n";
 }
 
 
@@ -160,3 +158,7 @@ sigc::signal<void, std::string> FastCheckoutscreen::getSignal()
 }
 
 
+std::string FastCheckoutscreen::getMoneyAmount()
+{
+    return this->_moneyyy;
+}
