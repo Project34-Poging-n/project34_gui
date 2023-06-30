@@ -11,7 +11,7 @@
 #define WINDOW_HEIGHT           720
 #define DEFAULT_PATH_FOR_CSS    "../css/style.css"
 #define PAGINATION_SIZE         5
-#define PAGINATION_STACK_SIZE   10
+#define PAGINATION_STACK_SIZE   30
 #define FAST_MONEY              75
 
 
@@ -19,9 +19,12 @@ static struct s_pageCell paginationTable[] = {
     { 0, "*", { 4, -1, -1, -1, -1} },
     { 1, "ABC", { 2, 3, 0, -1, -1 } },
     { 2, "#", { 1, -1, -1, -1, -1 } },
-    { 3, "ABCD#", { 4, 4, 4, 4, 1 } },
-    { 4, "*#", { 5, 3, -1, -1, -1 } },
-    { 5, "", { 1, -1, -1, -1, -1, } }
+    { 3, "AB#", { 4, 6, 1, -1, 1 } },
+    { 4, "*#", { 8, 3, -1, -1, -1 } },
+    { 5, "", { 1, -1, -1, -1, -1, } },
+    { 6, "*#", { 7, 3, -1, -1, -1 } },
+    { 7, "ABC#", { 4, 4, 4, 6, -1} },
+    { 8, "AB", { 5, 5, -1, -1, -1 } }
 };
 
 
@@ -129,9 +132,23 @@ void Window::checkLogin(std::string data)
                             send_data("http://145.24.222.207:5000/withdraw", root);
                             // send_data("http://127.0.0.1:3000/henk/"+get_iban(), root);
                             paginationStack[++pp] = 5;
-                        } else {
-                            std::cout << "[error]\tPage not found\n";
+                        } else if (this->scs.check_pincode() && (paginationStack[pp-1] == 7) && paginationTable[i].commands[j] == '*') {
+                            
                         }
+
+                        if ((paginationStack[pp-1] == 6) && paginationTable[i].commands[i] == '*') {
+
+                        }
+
+                        if ((paginationStack[pp-1] == 6) && paginationTable[i].commands[i] == 'A') {
+                            this->_money = 50;
+                        } else if ((paginationStack[pp-1] == 6) && paginationTable[i].commands[i] == 'B') {
+                            this->_money = 20;
+                        } else if ((paginationStack[pp-1] == 6) && paginationTable[i].commands[i] == 'C') {
+                            this->_money = 5;
+                        }
+
+
                     } else if (paginationStack[pp] == 1 && paginationTable[i].commands[j] == 'c') { 
                         reset_stack_to_position(0);
                         set_username("");
@@ -171,24 +188,41 @@ bool Window::getPageReady()
 }
 
 
+/**
+ * Function to add a pagination to the pagination stack
+ * 
+ * @param page
+*/
 void add_to_pagination_stack(int page)
 {
     paginationStack[++pp] = page;
 }
 
 
+/**
+ * 
+ * 
+*/
 int get_current_stack_position()
 {
     return paginationStack[pp];
 }
 
 
+/**
+ * 
+ * 
+*/
 void reset_stack_to_position(int p)
 {
     pp = p;
 }
 
 
+/**
+ * 
+ * 
+*/
 void Window::setCurrentPageNumber(int number)
 {
     this->_currentPageNumber = number;
@@ -196,6 +230,10 @@ void Window::setCurrentPageNumber(int number)
 }
 
 
+/**
+ * 
+ * 
+*/
 int Window::getCurrentPageNumber()
 {
     return this->_currentPageNumber;

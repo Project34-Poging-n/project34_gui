@@ -9,6 +9,8 @@
 #include "saldoscreen.hpp"
 #include "slowcheckoutscreen.hpp"
 #include "successscreen.hpp"
+#include "fastcheckoutscreen.hpp"
+#include "biljetscreen.hpp"
 
 
 #ifndef __PROJECT34__WINDOW__
@@ -29,6 +31,8 @@ class Window : public Gtk::Window
         int _currentPageNumber;
         bool _ready_for_next_page;
         void checkLogin(std::string data);
+        unsigned int _money = 0;
+        unsigned int _money_amount = 0;
 
     protected:
         Gtk::Notebook notebook;
@@ -41,6 +45,8 @@ class Window : public Gtk::Window
         Checkoutscreen cs;
         SlowCheckoutscreen scs;
         Successscreen sss;
+
+        Biljetscreen bjs;
 
     public:
         Window(std::string title, sigc::signal<void, std::string> &signal);

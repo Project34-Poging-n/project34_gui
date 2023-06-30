@@ -25,6 +25,7 @@ set(HEADER_FILES
     headers/successscreen.hpp
     headers/routing.hpp
     headers/usermodel.hpp
+    headers/biljetscreen.hpp
 )
 
 # Define all cxx files in the project
@@ -39,6 +40,7 @@ set(GUI_FILES
     src/screen/checkoutscreen.cpp
     src/screen/slowcheckoutscreen.cpp
     src/screen/successscreen.cpp
+    src/screen/biljetscreen.cpp
     src/window.cpp
 )
 

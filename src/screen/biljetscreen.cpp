@@ -1,11 +1,11 @@
 #include <gtkmm.h>
-#include "checkoutscreen.hpp"
+#include "biljetscreen.hpp"
 
 
 #define BAR_MARGIN 10
 
 
-Checkoutscreen::Checkoutscreen()
+Biljectscreen::Biljectscreen()
 {    
     this->vbox.set_spacing(0);
     this->vbox.set_orientation(Gtk::ORIENTATION_HORIZONTAL);
@@ -19,7 +19,7 @@ Checkoutscreen::Checkoutscreen()
     this->vbox.pack_start(this->side_box4);
 
     // Set child elements
-    this->fastp.set_text("€ 70     (A)");
+    this->fastp.set_text("€ 50     (A)");
     this->fastp.override_background_color(Gdk::RGBA("#B9DBF5"));
     this->fastp.override_color(Gdk::RGBA("#FF4C4F"));\
     Pango::FontDescription font_desc1;
@@ -31,7 +31,18 @@ Checkoutscreen::Checkoutscreen()
     this->fastp.set_margin_end(30);
     this->fastp.set_alignment(0.9, 0.5);
 
-    this->slowp.set_text("Ander bedrag  (D)");
+    this->slowp.set_text("€ 20     (B)");
+    this->slowp.override_background_color(Gdk::RGBA("#B9DBF5"));
+    this->slowp.override_color(Gdk::RGBA("#FF4C4F"));\
+    font_desc1.set_size(30 * PANGO_SCALE);
+    this->slowp.override_font(font_desc1);
+    this->slowp.set_margin_top(BAR_MARGIN);
+    this->slowp.set_margin_bottom(BAR_MARGIN);
+    this->slowp.set_margin_start(270);
+    this->slowp.set_margin_end(30);
+    this->slowp.set_alignment(0.9, 0.5);
+
+    this->slowp.set_text("€ 5      (C)");
     this->slowp.override_background_color(Gdk::RGBA("#B9DBF5"));
     this->slowp.override_color(Gdk::RGBA("#FF4C4F"));\
     font_desc1.set_size(30 * PANGO_SCALE);
@@ -84,7 +95,25 @@ Checkoutscreen::Checkoutscreen()
 }
 
 
-Checkoutscreen::~Checkoutscreen()
+Biljectscreen::~Biljectscreen()
 {
     
 }   
+
+
+unsigned int Biljectscreen::getBiljet50()
+{
+    return this->_biljet50;
+}
+
+
+unsigned int Biljectscreen::getBiljet20()
+{
+    return this->_biljet20;
+}
+
+
+unsigned int Biljectscreen::getBiljet5()
+{
+    return this->_biljet5;
+}
