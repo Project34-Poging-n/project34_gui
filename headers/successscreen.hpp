@@ -29,6 +29,7 @@ class Successscreen
         void writeToDispenser(const char *amount);
         void setSignal(sigc::signal<void, std::string> &signal);
         sigc::signal<void, std::string> getSignal();
+        void setLabelText(std::string label);
         
     private:
         sigc::signal<void, std::string> signal;

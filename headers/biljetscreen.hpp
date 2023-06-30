@@ -29,6 +29,7 @@ class Biljetscreen
         Gtk::Image logo;
         Gtk::Label fastp;
         Gtk::Label slowp;
+        Gtk::Label slowpp;
         Gtk::Label back;
         Gtk::Label fastp2;
         Gtk::Label fastp3;

@@ -22,6 +22,7 @@ class SlowCheckoutscreen
         Gtk::Box side_box3;
         Gtk::Box side_box4;
         Gtk::Label l_label1;
+        Gtk::Label m_label;
         Gtk::Image logo;
         Gtk::Label title;
         Gtk::Entry textbox;

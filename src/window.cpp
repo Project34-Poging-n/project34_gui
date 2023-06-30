@@ -123,7 +123,7 @@ void Window::checkLogin(std::string data)
                             paginationStack[++pp] = 8;
                             break;
                         } else if (this->scs.check_pincode() && (paginationStack[pp-1] == 7) && paginationTable[i].commands[j] == '*') {
-                            
+                            paginationStack[++pp] = 8;
                         } else {
                             break;
                         }
@@ -164,15 +164,17 @@ void Window::checkLogin(std::string data)
                         paginationStack[++pp] = 5;
                         break;
                     } else if (paginationStack[pp] == 6 && paginationTable[i].commands[j] == '*') {
-                        // this->_money_amount = atoi(fcs.getMoneyAmount().c_str());
-                        // std::cout << "Hij is hier oook!!: " << this->_money_amount << "\n";
-                        this->_money_amount = 10;
+                        this->_money_amount = atoi(fcs.getMoneyAmount().c_str());
+                        // this->_money_amount = 10;
                     } if (paginationStack[pp-1] == 6 && paginationTable[i].commands[j] == 'A') {
                         this->_money = 50;
+                        paginationStack[++pp] = 4;
                     } else if (paginationStack[pp-1] == 6 && paginationTable[i].commands[j] == 'B') {
                         this->_money = 20;
+                        paginationStack[++pp] = 4;
                     } else if (paginationStack[pp-1] == 6 && paginationTable[i].commands[j] == 'C') {
                         this->_money = 5;
+                        paginationStack[++pp] = 4;
                     } else {
                         paginationStack[++pp] = paginationTable[i].newpage[j];
                     }

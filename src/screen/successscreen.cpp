@@ -58,6 +58,15 @@ Successscreen::Successscreen()
 
     // Print the money
 
+    this->l_label1.set_margin_top(240);
+    this->l_label1.set_text("Uw verzoek is geslaagd!");
+    this->l_label1.override_color(Gdk::RGBA("#B9DBF5"));
+    Pango::FontDescription font_desc2;
+    font_desc2.set_size(40 * PANGO_SCALE);
+    this->l_label1.override_font(font_desc2);
+    this->l_label1.set_alignment(0.5, 0.0);
+
+    this->side_box4.pack_start(this->l_label1);
 }
 
 
@@ -124,4 +133,10 @@ void Successscreen::setSignal(sigc::signal<void, std::string> &signal)
 sigc::signal<void, std::string> Successscreen::getSignal()
 {
     return this->signal;
+}
+
+
+void Successscreen::setLabelText(std::string label)
+{
+    this->l_label1.set_text(label);
 }

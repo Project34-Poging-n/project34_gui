@@ -42,16 +42,16 @@ Biljetscreen::Biljetscreen()
     this->slowp.set_margin_end(30);
     this->slowp.set_alignment(0.9, 0.5);
 
-    this->slowp.set_text("€ 5      (C)");
-    this->slowp.override_background_color(Gdk::RGBA("#B9DBF5"));
-    this->slowp.override_color(Gdk::RGBA("#FF4C4F"));\
+    this->slowpp.set_text("€ 5      (C)");
+    this->slowpp.override_background_color(Gdk::RGBA("#B9DBF5"));
+    this->slowpp.override_color(Gdk::RGBA("#FF4C4F"));\
     font_desc1.set_size(30 * PANGO_SCALE);
-    this->slowp.override_font(font_desc1);
-    this->slowp.set_margin_top(BAR_MARGIN);
-    this->slowp.set_margin_bottom(BAR_MARGIN);
-    this->slowp.set_margin_start(270);
-    this->slowp.set_margin_end(30);
-    this->slowp.set_alignment(0.9, 0.5);
+    this->slowpp.override_font(font_desc1);
+    this->slowpp.set_margin_top(BAR_MARGIN);
+    this->slowpp.set_margin_bottom(BAR_MARGIN);
+    this->slowpp.set_margin_start(270);
+    this->slowpp.set_margin_end(30);
+    this->slowpp.set_alignment(0.9, 0.5);
 
     this->back.set_text("Terug    (#)");
     this->back.override_background_color(Gdk::RGBA("#B9DBF5"));
@@ -89,6 +89,7 @@ Biljetscreen::Biljetscreen()
     this->side_box4.pack_start(this->fastp2);
     this->side_box4.pack_start(this->fastp3);
     this->side_box4.pack_start(this->slowp);
+     this->side_box4.pack_start(this->slowpp);
     this->side_box4.pack_start(this->back);
 
     // show_all_children();

@@ -3,6 +3,8 @@
 #include <iostream>
 #include <locale>
 #include <regex>
+#include <chrono>
+#include <thread>
 #include <json/json.h>
 #include "api.hpp"
 #include "usermodel.hpp"
@@ -64,6 +66,11 @@ SlowCheckoutscreen::SlowCheckoutscreen()
     font_desc2.set_size(40 * PANGO_SCALE);
     this->textbox.override_font(font_desc1);
 
+    this->m_label.set_text("");
+    this->m_label.override_color(Gdk::RGBA("#FF0000"));
+    font_desc1.set_size(10 * PANGO_SCALE);
+    this->m_label.override_font(font_desc1);
+
     this->back.set_text("Terug    (#)");
     this->back.override_background_color(Gdk::RGBA("#B9DBF5"));
     this->back.override_color(Gdk::RGBA("#FF4C4F"));\
@@ -80,6 +87,7 @@ SlowCheckoutscreen::SlowCheckoutscreen()
     this->side_box1.pack_start(this->logo);
     this->side_box4.pack_start(this->title);
     this->side_box4.pack_start(this->textbox);
+    this->side_box4.pack_start(this->m_label);
     this->side_box4.pack_start(this->back);
 
     // show_all_children();
@@ -147,31 +155,41 @@ bool SlowCheckoutscreen::check_pincode()
 {   
     Json::Value root;
 
-    root["account"]    = get_iban();
+    root["account"] = get_iban();
     root["pincode"] = od; 
 
     if (pc >= 3) {
         std::string url = "http://127.0.0.1:5000/block";
         send_data(url, root);
         std::cout << "[info]\tPassword blocked!\n";
+        this->m_label.set_text("Password blocked!");
+        pc = 0;
         return false;
     }
 
-    // std::string url = "http://145.24.222.207:5000/login";
-    std::string url = "http://127.0.0.1:5000/login";
-    Json::Value result = send_data(url, root);
+    if (od.size() > 0) {
+        // std::string url = "http://145.24.222.207:5000/login";
+        std::string url = "http://127.0.0.1:5000/login";
+        Json::Value result = send_data(url, root);
 
-    if (result["status"].asBool() == true && result["pincode"] == od) {
-        std::cout << "[info]\tJuiste pincode ingevoerd!";
-        set_password(result["pincode"].asCString());
-        return true;
-    } 
+        if (result["status"].asBool() == true && result["pincode"] == od) {
+            std::cout << "[info]\tCorrect pincode!";
+            set_password(result["pincode"].asCString());
+            pc = 0;
+            return true;
+        } 
 
-    std::cout << "Verkeerde pincode ingevoerd!\n";
-    dot = "";
-    od = "";
-    this->textbox.set_text(dot);
-    pc++;
+        pc++;
+        this->m_label.set_text("Wrong pincode: " + std::to_string(3-pc) + " attempts left");
+        std::cout << "[info]\tWrong pincode!\n";
+        std::cout << "[info]\tTotal attemps left: " << 3-pc << "\n";
+        dot = "";
+        od = "";
+        this->textbox.set_text(dot);
+
+        return false;
+    }
+
     return false;
 }
 
