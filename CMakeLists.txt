@@ -25,6 +25,7 @@ set(HEADER_FILES
     headers/successscreen.hpp
     headers/routing.hpp
     headers/usermodel.hpp
+    headers/fastcheckoutscreen.hpp
     headers/biljetscreen.hpp
 )
 
@@ -40,6 +41,7 @@ set(GUI_FILES
     src/screen/checkoutscreen.cpp
     src/screen/slowcheckoutscreen.cpp
     src/screen/successscreen.cpp
+    src/screen/fastcheckoutscreen.cpp
     src/screen/biljetscreen.cpp
     src/window.cpp
 )

@@ -6,17 +6,14 @@
 #include <string>
 
 
-#ifndef __PROJECT34__SALDOSCREEN__
-#define __PROJECT34__SALDOSCREEN__
+#ifndef __PROJECT34__BILJETSCREEN__
+#define __PROJECT34__BILJETSCREEN__
 
 
 
-class Biljectscreen
+class Biljetscreen
 {  
     private:
-        sigc::signal<void, std::string> signal;
-        void update_saldo(std::string data);
-
         unsigned int _biljet50   = 50;
         unsigned int _biljet20   = 20;
         unsigned int _biljet5    = 5;
@@ -30,14 +27,17 @@ class Biljectscreen
         Gtk::Label l_label2;
         Gtk::Label l_label3;
         Gtk::Image logo;
+        Gtk::Label fastp;
+        Gtk::Label slowp;
+        Gtk::Label back;
+        Gtk::Label fastp2;
+        Gtk::Label fastp3;
 
     public:
         Gtk::Box vbox;
 
-        Saldoscreen();
-        virtual ~Saldoscreen();
-        void setSignal(sigc::signal<void, std::string> &signal);
-        sigc::signal<void, std::string> getSignal();
+        Biljetscreen();
+        virtual ~Biljetscreen();
 
        //  Gtk::Box *getVBox();
        int getPageNumber();

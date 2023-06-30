@@ -48,7 +48,7 @@ Window::Window(std::string title, sigc::signal<void, std::string> &signal)
     set_border_width(10);
 
     // Configure css file
-    Glib::ustring cssPath = "../css/style.css";
+    // Glib::ustring cssPath = "../css/style.css";
     // auto css = Gtk::CssProvider::create();
     // css->load_from_file(cssPath);
     // get_style_context()->add_provider_for_screen(Gdk::Screen::get_default(), css, GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
@@ -69,6 +69,8 @@ Window::Window(std::string title, sigc::signal<void, std::string> &signal)
     this->notebook.append_page(this->cs.vbox, "Checkoutscreen");
     this->notebook.append_page(this->scs.vbox, "FastCheckout");
     this->notebook.append_page(this->sss.vbox, "Successscreen");
+    this->notebook.append_page(this->fcs.vbox, "Fastjemoeder");
+    this->notebook.append_page(this->bjs.vbox, "Biljetscreen");
     this->notebook.set_show_tabs(false);
 
     add(this->notebook);

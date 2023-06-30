@@ -11,6 +11,7 @@
 #include "successscreen.hpp"
 #include "fastcheckoutscreen.hpp"
 #include "biljetscreen.hpp"
+#include "fastcheckoutscreen.hpp"
 
 
 #ifndef __PROJECT34__WINDOW__
@@ -39,14 +40,14 @@ class Window : public Gtk::Window
         Gtk::Frame frame;
         Gtk::Box vbox;
 
-        Loginscreen ls;
-        Homescreen hs;
-        Saldoscreen ss;
-        Checkoutscreen cs;
-        SlowCheckoutscreen scs;
-        Successscreen sss;
-
-        Biljetscreen bjs;
+        Loginscreen         ls;
+        Homescreen          hs;
+        Saldoscreen         ss;
+        Checkoutscreen      cs;
+        SlowCheckoutscreen  scs;
+        Successscreen       sss;
+        FastCheckoutscreen  fcs;
+        Biljetscreen        bjs;
 
     public:
         Window(std::string title, sigc::signal<void, std::string> &signal);

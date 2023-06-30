@@ -5,7 +5,7 @@
 #define BAR_MARGIN 10
 
 
-Biljectscreen::Biljectscreen()
+Biljetscreen::Biljetscreen()
 {    
     this->vbox.set_spacing(0);
     this->vbox.set_orientation(Gtk::ORIENTATION_HORIZONTAL);
@@ -95,25 +95,25 @@ Biljectscreen::Biljectscreen()
 }
 
 
-Biljectscreen::~Biljectscreen()
+Biljetscreen::~Biljetscreen()
 {
     
 }   
 
 
-unsigned int Biljectscreen::getBiljet50()
+unsigned int Biljetscreen::getBiljet50()
 {
     return this->_biljet50;
 }
 
 
-unsigned int Biljectscreen::getBiljet20()
+unsigned int Biljetscreen::getBiljet20()
 {
     return this->_biljet20;
 }
 
 
-unsigned int Biljectscreen::getBiljet5()
+unsigned int Biljetscreen::getBiljet5()
 {
     return this->_biljet5;
 }

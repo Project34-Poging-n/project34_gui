@@ -1,5 +1,5 @@
 #include <gtkmm.h>
-#include "slowcheckoutscreen.hpp"
+#include "fastcheckoutscreen.hpp"
 #include <iostream>
 #include <locale>
 #include <regex>
@@ -18,7 +18,7 @@ static std::string dot = "";
 /**
  * Constructor
  */
-FastCheckoutscreen::SlowCheckoutscreen()
+FastCheckoutscreen::FastCheckoutscreen()
 {    
     this->vbox.set_spacing(0);
     this->vbox.set_orientation(Gtk::ORIENTATION_HORIZONTAL);
@@ -88,7 +88,7 @@ FastCheckoutscreen::SlowCheckoutscreen()
 /**
  * Destructor
  */
-FastCheckoutscreen::~SlowCheckoutscreen()
+FastCheckoutscreen::~FastCheckoutscreen()
 {
     
 }   
@@ -138,35 +138,6 @@ void FastCheckoutscreen::update_textbox(std::string data)
 
 
 /**
- * Function to check if the pincode is correct!
- * 
- * @return bool
-*/
-bool FastCheckoutscreen::check_pincode()
-{   
-    Json::Value root;
-
-    root["account"]    = get_iban();
-    root["pincode"] = od; 
-
-    std::string url = "http://145.24.222.207:5000/login";
-    Json::Value result = send_data(url, root);
-
-    if (result["status"].asBool() == true && result["pincode"] == od) {
-        std::cout << "[info]\tJuiste pincode ingevoerd!";
-        set_password(result["pincode"].asCString());
-        return true;
-    } 
-
-    std::cout << "Verkeerde pincode ingevoerd!\n";
-    dot = "";
-    od = "";
-    this->textbox.set_text(dot);
-    return false;
-}
-
-
-/**
  * Function to enable the signal
  * 
  * @param signal 
@@ -174,7 +145,7 @@ bool FastCheckoutscreen::check_pincode()
 void FastCheckoutscreen::setSignal(sigc::signal<void, std::string> &signal)
 {
     this->signal = signal;
-    this->signal.connect(sigc::mem_fun(this, &SlowCheckoutscreen::update_textbox));
+    this->signal.connect(sigc::mem_fun(this, &FastCheckoutscreen::update_textbox));
 }
 
 

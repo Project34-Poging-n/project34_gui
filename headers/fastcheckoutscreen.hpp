@@ -31,12 +31,11 @@ class FastCheckoutscreen
         Gtk::Box vbox;
         int _get_current_number;
 
-        SlowCheckoutscreen();
-        virtual ~SlowCheckoutscreen();
+        FastCheckoutscreen();
+        virtual ~FastCheckoutscreen();
         void setSignal(sigc::signal<void, std::string> &signal);
         sigc::signal<void, std::string> getSignal();
         std::string trim(const std::string& str);
-        bool check_pincode();
 };
 
 #endif
