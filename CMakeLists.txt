@@ -28,6 +28,7 @@ set(HEADER_FILES
     headers/fastcheckoutscreen.hpp
     headers/biljetscreen.hpp
     headers/receiptscreen.hpp
+    headers/baseview.hpp
 )
 
 # Define all cxx files in the project
@@ -36,6 +37,7 @@ set(SERIAL_FILES src/serial.cpp)
 
 # Define all cxx files for the gui library
 set(GUI_FILES  
+    src/screen/baseview.cpp
     src/screen/homescreen.cpp
     src/screen/loginscreen.cpp
     src/screen/saldoscreen.cpp
